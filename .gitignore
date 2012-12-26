@@ -20,6 +20,10 @@
 Debug*/
 ipch/
 *.opensdf
-*.sdf
-*.suo
 *.vcxproj.user
+*.suo
+*.sdf
+/*.vcxproj.user
+/*.opensdf
+/*.suo
+/*.sdf
