@@ -18,6 +18,7 @@
 
 # Visual Studio
 Debug*/
+Release*/
 ipch/
 *.opensdf
 *.vcxproj.user
