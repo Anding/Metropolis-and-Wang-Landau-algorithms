@@ -5,14 +5,16 @@
 // http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
 
 // Preprocessor numeric constants
-#define dimensions 2				// maximum 4, assuming a span of 64
-#define span 64						// width of lattice along every dimension
-#define coldstart 1					// 0 = coldstart, 1 = hotstart
-#define betamax	1.0					// maximum value of beta
+#define dimensions 1				// maximum 4, assuming a span of 64
+#define span 8096					// width of lattice along every dimension
+#define coldstart 0					// -1 = coldstart, 0 = hotstart
+#define betamax	4.0					// maximum value of beta
 #define betamin 0.0					// minimum value of beta
-#define samples 200					// # of steps in beta across which to sample the phenomena
-#define runcount 1000				// # of runs for averaging at each temperature
-#define equlibriate 10000			// no. steps to equlibriate
+#define samples 200					// # of samples between betamin and betamax
+#define equlibriate 100000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
+#define runcount 10000				// # of averaging runs at each value of beta
+#define runsteps 10000				// # of Monte Carlo steps between each averaging run
+#define Boltzmann 5.0				// Boltzmann constant (used only for scaling heat capacity)
 	
 // Global variables
 double beta;						// Thermodynamic beta  = 1 / T
@@ -103,9 +105,11 @@ int main()
 	{
 		printf("Beta = %f\n",beta);
 		beta_list[i] = beta;
+		for (k = 0; k < equlibriate; k++)
+				metropolis();
 		for (j = 0; j < runcount; j++)
 		{
-			for (k = 0; k < equlibriate; k++)
+			for (k = 0; k < runsteps; k++)
 				metropolis();
 			stats();
 			energy_list[i] += energy;
@@ -122,7 +126,7 @@ int main()
 		energy_list[i] /= runcount;
 		energy2_list[i] /= runcount;
 		magnetiz_list[i] /= runcount;
-		heatcapacity_list[i] = beta_list[i] * beta_list[i] * (energy2_list[i] - energy_list[i] * energy_list[i]);
+		heatcapacity_list[i] = Boltzmann * beta_list[i] * beta_list[i] * (energy2_list[i] - energy_list[i] * energy_list[i]);
 	}
 
 	printf("Simulation complete. Press any key to exit.\n");
@@ -227,8 +231,8 @@ void stats(void)					// Calculate the stats for the lattice
 		sum_e2 += e*e;
 	}
 
-	energy = sum_e / modulus;
-	energy2 = sum_e2 / modulus;
+	energy = sum_e / modulus / 2.0;				// divide by 2.0 since each interaction energy has been counted twice
+	energy2 = sum_e2 / modulus / 4.0;			// divide by 4.0 for the same reason since this is energy squared
 	magnetiz = sum_m / modulus;
 
 }
