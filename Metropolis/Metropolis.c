@@ -6,14 +6,14 @@
 
 // Preprocessor numeric constants
 #define dimensions 1				// maximum 4, assuming a span of 64
-#define span 8096					// width of lattice along every dimension
+#define span 16192					// width of lattice along every dimension
 #define coldstart 0					// -1 = coldstart, 0 = hotstart
 #define betamax	4.0					// maximum value of beta
 #define betamin 0.0					// minimum value of beta
 #define samples 200					// # of samples between betamin and betamax
-#define equlibriate 100000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
+#define equlibriate 1000000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
 #define runcount 10000				// # of averaging runs at each value of beta
-#define runsteps 10000				// # of Monte Carlo steps between each averaging run
+#define runsteps 100000				// # of Monte Carlo steps between each averaging run
 #define Boltzmann 5.0				// Boltzmann constant (used only for scaling heat capacity)
 	
 // Global variables
