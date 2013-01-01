@@ -6,16 +6,16 @@
 
 // Preprocessor numeric constants
 #define dimensions 2				// maximum 4, assuming a span of 64
-#define span 16						// width of lattice along every dimension
-#define coldstart -1				// -1 = coldstart, 0 = hotstart
+#define span 48						// width of lattice along every dimension
+#define coldstart 0				// -1 = coldstart, 0 = hotstart
 #define betamax	1.0					// maximum value of beta
 #define betamin 0.0					// minimum value of beta
 #define samples 200					// # of samples between betamin and betamax
-#define Boltzmann 50.0				// Boltzmann constant (used only for scaling heat capacity)
-#define runsteps 100000			// number of Monte Carlo steps between each check of the histogram
+#define Boltzmann 500.0				// Boltzmann constant (used only for scaling heat capacity)
+#define runsteps 1000000			// number of Monte Carlo steps between each check of the histogram
 #define flatness_criterion 0.80		// criterion for testing the flatness of the histogram
 #define ln_f_initial 1.0			// initial value of the adjustment factor
-#define ln_f_final 1.0			// final value of the adjustment factor
+#define ln_f_final .0001			// final value of the adjustment factor
 #define ln_2 0.6931471806			// ln_g[lowest energy configuration] = ln(2), for normalization
 
 // Macro for addressing the density of states array with an energy level
@@ -103,20 +103,18 @@ int main()
 
 	for (ln_f = ln_f_initial; ln_f >= ln_f_final; ln_f = ln_f  / 2.0)			// proceeds over successively smaller adjustment factors
 	{
+		zero_hist();															// zero the histogram
 		printf("ln_f = %f\n",ln_f);
 		do
 		{
-			zero_hist();														// zero the histogram
 			for(i = 0; i < runsteps; i++)										// iterate the Wang Landau algorithm	
 				wanglandau();
 		} while( ! flat());														// check flatness of the histogram
 	}
 
 	normalize_dos();															// normalize the density of states
-	
-	print_results();
+
 	microaverage();																// calculate the average magnetization at each energy level
-	print_results();
 
 	num_sums();																	// perform the numerical sums to obtain the thermodynamic quantities
 
@@ -192,7 +190,7 @@ void flip(long n)					// Flip cell n
 void wanglandau(void)				// Select a trial cell and transition the lattice according to Wang Landau
 {
 	long flag = 0;
-	long n, lattice_energy1, lattice_magnetiz1;
+	long n, lattice_energy1, lattice_magnetiz1, t = 0;
 	double p, ln_g0, ln_g1;
 
 	n = rnd_cell();
@@ -214,6 +212,12 @@ void wanglandau(void)				// Select a trial cell and transition the lattice accor
 	{
 		flip(n);
 		lattice_energy = lattice_energy1;
+/*		t = lattice_energy; 
+		stats();
+		if (t != lattice_energy) 
+		{
+			printf("Energy calculation problem\n"); getchar();
+		} */
 		lattice_magnetiz = lattice_magnetiz1;
 	}
 		ln_g[indx(lattice_energy)] += ln_f;
@@ -264,7 +268,7 @@ long flat(void)						// check the flatness of the histogram against the criterio
 {
 	long i, h;
 	long hist_max = 0;
-	long hist_min = 1<<15;
+	long hist_min = 2147483647 ;
 	double range;
 
 	for (i = 0; i <= modulus; i++)									// scan the density of states and identify the maximum and minimum values
@@ -279,6 +283,8 @@ long flat(void)						// check the flatness of the histogram against the criterio
 	}
 
 	range = ((double) (hist_max - hist_min)) / ((double) (hist_max + hist_min));				// compare the range against the flatness criterion
+	//printf("range %f\tmax %d\tmin %d\n", range, hist_max, hist_min);
+
 	if (range < (1 - flatness_criterion))
 		return -1;
 	else
@@ -389,9 +395,18 @@ void fprint_results(void)			// Output the results of a simulation run
 	fopen_s(&fp, "wanglandau.txt","w");
 	if (fp != NULL)
 	{
-		fprintf(fp,"beta\t Magnetization\tHeat capacity\tEnergy\n");
+		fprintf(fp,"Beta\t Magnetization\tHeat capacity\tEnergy\n");
 		for (i = 0; i < samples; i++)
 			fprintf(fp,"%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i]);
+	fclose(fp);	
+	}
+
+	fopen_s(&fp, "wanglandau2.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Energy\tln(density of states)\n");
+		for (i = 0; i <= modulus; i++)
+			fprintf(fp,"%d\t%f\n", 4*i - 2*modulus, ln_g[i]);
 	fclose(fp);	
 	}
 
