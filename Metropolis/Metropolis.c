@@ -5,18 +5,18 @@
 // http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
 
 // Preprocessor numeric constants
-#define dimensions 3				// maximum 4, assuming a span of 64
-#define span 8						// width of lattice along every dimension
+#define dimensions 2				// maximum 4, assuming a span of 64
+#define span 16						// width of lattice along every dimension
 #define coldstart -1				// -1 = coldstart, 0 = hotstart
-#define betamax	0.5				// maximum value of beta
-#define betamin 0.0				// minimum value of beta
+#define betamax	0.45				// maximum value of beta
+#define betamin 0.41				// minimum value of beta
 #define samples 200					// # of samples between betamin and betamax
-#define	experiments 1			// # of separate experiments to compile
+#define	experiments 10000			// # of separate experiments to compile
+#define runcount 1000				// # of averaging runs at each value of beta
+#define Boltzmann 1.0				// Boltzmann constant (used only for scaling heat capacity)
 #define equlibriate 100000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
-#define runcount 10000				// # of averaging runs at each value of beta
-#define runsteps 10000				// # of Monte Carlo steps between each averaging run
-#define Boltzmann 150.0				// Boltzmann constant (used only for scaling heat capacity)
-	
+#define runsteps 1000				// # of Monte Carlo steps between each averaging run
+
 // Global variables
 double beta;						// Thermodynamic beta  = 1 / T
 double beta_critical;				// Beta at the critical point

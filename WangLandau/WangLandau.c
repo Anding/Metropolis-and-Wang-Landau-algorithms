@@ -5,31 +5,33 @@
 // http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
 
 // Preprocessor numeric constants
-#define dimensions 3				// maximum 4, assuming a span of 64
+#define dimensions 4				// maximum 4, assuming a span of 64
 #define span 8						// width of lattice along every dimension
-#define coldstart -1				// -1 = coldstart, 0 = hotstart
-#define betamax	0.5					// maximum value of beta
+#define coldstart 0					// -1 = coldstart, 0 = hotstart
+#define betamax	0.25					// maximum value of beta
 #define betamin 0.0					// minimum value of beta
 #define samples 200					// # of samples between betamin and betamax
 #define	experiments 1				// # of separate experiments to compile
-#define Boltzmann 150.0				// Boltzmann constant (used only for scaling heat capacity)
+#define Boltzmann 1500.0				// Boltzmann constant (used only for scaling heat capacity)
 #define runsteps 100000				// number of Monte Carlo steps between each check of the histogram
-#define	referencesteps 1000000		// number of Monte Carlo steps to establish the reference histogram
+#define	referencesteps 10000000000		// number of Monte Carlo steps to establish the reference histogram
 #define reference_level 1000		// minimum count in the reference histogram to include an energy level
 #define flatness_criterion 0.80		// criterion for testing the flatness of the histogram
-#define iterationlimit 1000			// criterion for avoiding stuck random walks
+#define iterationlimit 100000			// criterion for avoiding stuck random walks
 #define ln_f_initial 1.0			// initial value of the adjustment factor
 #define ln_f_final .0001			// final value of the adjustment factor
 #define ln_2 0.6931471806			// ln_g[lowest energy configuration] = ln(2), for normalization
 
 // Macro for addressing the density of states array with an energy level
-#define indx(E)	(E + 2 * modulus) / 4
+#define indx(E)	(E + dimensions * modulus) / 4
+#define unindx(i) (4 * i - dimensions * modulus)
 	
 // Global variables
 double beta;						// Thermodynamic beta  = 1 / T
 double beta_critical;				// Beta at the critical point
 long sample_critical;				// sample number of critical beta
 long modulus;						// number of cells in the lattice
+long energy_levels;					// number of energy levels
 char lattice[16777216];				// allocation of memory for the lattice, 1 byte per cell
 double ln_g[16777217];				// allocation of memory for the density of states, as natural logarithm
 long hist[16777217];				// allocation of memory for the histogram
@@ -79,16 +81,19 @@ void zero_hist_ref(void);			// initialize reference histogram
 int main()
 {
 	long i;
+	unsigned long x = rnd();
 
 	for (i = 0; i < samples; i++)				// zero the histogram
 	{
 		critical_histogram[i] = 0;
 	}
 
-	for (i = 0; i < experiments; i++)				// zero the histogram
+	for (i = 0; i < experiments; i++)			// perform the experiment set
 	{
 		printf("%d...",i);
-		while (! experiment());
+		while (x = rnd(), ! experiment())
+			printf("\nHang with seed %u\n", x);
+
 		critical_histogram[sample_critical] += 1;
 	}
 
@@ -108,17 +113,25 @@ int experiment()
 
 	// initialize
 	newlattice(); zero_dos(); zero_hist(); zero_hist_ref();
+	energy_levels = (dimensions * modulus) / 2 + 1;
 
 	// setup the reference histogram
 	ln_f = ln_f_initial;
 	for(i = 0; i < referencesteps; i++)																					
 			wanglandau();
 
-	for(i=0; i <= modulus; i++)
+	for(i=0; i < energy_levels; i++)
 			hist_ref[i] = hist[i] - reference_level;
 
+	// initialize the lattice to an allowed configuration
+	zero_dos();
+	do {
+		newlattice();
+		stats();
+	}
+	while (hist_ref[indx(lattice_energy)] < 0);
+
 	// iterate the Wang Landau algorithm
-	newlattice(); zero_dos();
 	for(ln_f = ln_f_initial; ln_f >= ln_f_final; ln_f = ln_f  / 2.0)			// proceeds over successively smaller adjustment factors
 	{
 		zero_hist(); n = 0;														// zero the histogram
@@ -182,7 +195,7 @@ long flat(void)						// check the flatness of the histogram against the criterio
 	long hist_min = 2147483647 ;
 	double range;
 
-	for (i = 0; i <= modulus; i++)									// scan the density of states and identify the maximum and minimum values
+	for (i = 0; i < energy_levels; i++)									// scan the density of states and identify the maximum and minimum values
 	{
 		if (hist_ref[i] >= 0)										// ignore energy levels that cannot be reached
 		{
@@ -219,10 +232,10 @@ void num_sums(void)															// perform the numerical sums over the density
 	{
 		// pre-sum scan to remove largest factor from the exponential to improve accuracy
 		l_max = 0;
-		for (j = 0; j <= modulus; j++)	
+		for (j = 0; j < energy_levels; j++)	
 			if (hist_ref[j] >= 0)												// ignore unreachable configurations
 			{
-				e = (4 * j - 2 * modulus);										// e = lattice energy
+				e = unindx(j);													// e = lattice energy									
 				l = ln_g[j] - beta * e;
 				if ( l >= l_max)
 					l_max = l;
@@ -230,10 +243,10 @@ void num_sums(void)															// perform the numerical sums over the density
 
 		// conduct the sum
 		sum_f = 0.0; sum_e = 0.0; sum_e2 = 0.0; sum_m = 0.0; 
-		for (j = 0; j <= modulus; j++)											
+		for (j = 0; j < energy_levels; j++)											
 			if (hist_ref[j] >= 0)													// ignore unreachable configurations
 			{
-				e = (4 * j - 2 * modulus);										// e = lattice energy, E
+				e = unindx(j);													// e = lattice energy, E									
 				f = exp(ln_g[j] - beta * e - l_max);							// f = g[E]*Exp[-Beta * E]
 				sum_e += e * f;
 				sum_e2 += e * e * f;
@@ -267,7 +280,7 @@ void zero_dos(void)					// initialize density of states by setting ln_g[i] = 0 (
 {
 	long i;									// project settings will the direct optimizer to inline small functions
 
-	for (i = 0; i<modulus; i++)
+	for (i = 0; i < energy_levels; i++)
 	{
 		ln_g[i] = 0.0;
 	}
@@ -277,7 +290,7 @@ void zero_hist(void)				// initialize histogram and the array used for the calcu
 {
 	long i;									// project settings will the direct optimizer to inline small functions
 
-	for (i = 0; i<=modulus; i++)
+	for (i = 0; i < energy_levels; i++)
 	{
 		hist[i] = 0;
 		magnetiz_avg[i] = 0;
@@ -288,7 +301,7 @@ void zero_hist_ref(void)			// initialize reference histogram
 {
 	long i;									// project settings will the direct optimizer to inline small functions
 
-	for (i = 0; i<=modulus; i++)
+	for (i = 0; i < energy_levels; i++)
 	{
 		hist_ref[i] = 0;
 	}
@@ -300,7 +313,7 @@ void normalize_dos(void)			// normalize the density states so that ln[ground sta
 	long i;
 
 	delta = ln_g[0] - ln_2;			// lowest energy state has 2 configuartions
-	for (i = 0; i<=modulus; i++)
+	for (i = 0; i < energy_levels; i++)
 		ln_g[i] -= delta;			
 }
 
@@ -308,7 +321,7 @@ void microaverage(void)				// calculate the microcanonical average magnetization
 {
 	long i;
 
-	for (i = 0; i<=modulus; i++)
+	for (i = 0; i < energy_levels; i++)
 		if (hist_ref[i] >= 0)
 			magnetiz_avg[i] /= (double) hist[i];
 }
@@ -318,7 +331,7 @@ void print_stats(void)			// Output the latest stats
 	long i;
 
 	printf("hist\tlg_g\tmag\n");
-	for (i = 0; i <= modulus; i++)
+	for (i = 0; i < energy_levels; i++)
 		printf("%d\t%f\t%f\n",hist[i],ln_g[i],magnetiz_avg[i]);
 	printf("\n");
 }
@@ -348,7 +361,7 @@ void fprint_experiment(void)			// Output the results of a simulation run
 	if (fp != NULL)
 	{
 		fprintf(fp,"Energy\tln(density of states)\n");
-		for (i = 0; i <= modulus; i++)
+		for (i = 0; i < energy_levels; i++)
 			fprintf(fp,"%d\t%f\n", 4*i - 2*modulus, ln_g[i]);
 	fclose(fp);	
 	}
