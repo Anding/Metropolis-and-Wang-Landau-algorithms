@@ -5,30 +5,35 @@
 // http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
 
 // Preprocessor numeric constants
-#define dimensions 1				// maximum 4, assuming a span of 64
-#define span 16192					// width of lattice along every dimension
+#define dimensions 2				// maximum 4, assuming a span of 64
+#define span 16						// width of lattice along every dimension
 #define coldstart 0					// -1 = coldstart, 0 = hotstart
-#define betamax	4.0					// maximum value of beta
-#define betamin 0.0					// minimum value of beta
-#define samples 200					// # of samples between betamin and betamax
-#define equlibriate 1000000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
-#define runcount 10000				// # of averaging runs at each value of beta
-#define runsteps 100000				// # of Monte Carlo steps between each averaging run
+#define betamax	0.45				// maximum value of beta
+#define betamin 0.42				// minimum value of beta
+#define samples 50					// # of samples between betamin and betamax
+#define	experiments 1000			// # of separate experiments to compile
+#define equlibriate 100000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
+#define runcount 1000				// # of averaging runs at each value of beta
+#define runsteps 10000				// # of Monte Carlo steps between each averaging run
 #define Boltzmann 5.0				// Boltzmann constant (used only for scaling heat capacity)
 	
 // Global variables
 double beta;						// Thermodynamic beta  = 1 / T
+double beta_critical;				// Beta at the critical point
+long sample_critical;				// sample number of critical beta
 long modulus;						// number of cells in the lattice
 char lattice[16777216];				// allocation of memory for the lattice, 1 byte per cell
 									//	sufficient space for 64 * 64 * 64 * 64 lattice size
 long neighbours[2 * dimensions];	// list of nearest neighbours for a given cell
 long reach[dimensions];				// required reach to nearest neighbours
 double energy, energy2, magnetiz;	// statistics, averages per cell
-double energy_list[samples];		// results arrays holding the output at each sample point
+double energy_list[samples];		// results arrays holding the output at each sample point for a single experiment
 double energy2_list[samples];
 double magnetiz_list[samples];
 double beta_list[samples];
 double heatcapacity_list[samples];
+long critical_histogram[samples];	// histogram of the location of critical beta (sample no.) over many experiments
+
 
 // Function declarations
 unsigned long rnd(void);			// Return a random integer x between 0 and 1<<31
@@ -44,8 +49,10 @@ long cell_energy(long n);			// Sum the interaction energy attributable to cell n
 void flip(long);					// Flip cell n
 void metropolis(void);				// Select and flip a cell according to Metropolis
 void stats(void);					// Calculate the stats for the lattice 
-void print_results(void);			// Output the latest stats
-void fprint_results(void);			// Output the results of a simulation run
+void print_stats(void);				// Output the latest stats
+void fprint_experiment(void);		// Output the results of a simulation run
+void experiment(void);				// Run a single experiment from betamin to betamax
+void fprint_histogram(void);		// Output the histogram of critical values of Beta
 
 // Library routines
 unsigned long rnd(void)				// Return a random integer x between 0 and 1<<31
@@ -78,14 +85,38 @@ double abs_double(double x)			// abs for double precision numbers
 // Metropolis algorithm implementation
 int main()
 {
+	long i;
+
+	for (i = 0; i < samples; i++)				// zero the histogram
+	{
+		critical_histogram[i] = 0;
+	}
+
+	for (i = 0; i < experiments; i++)				// zero the histogram
+	{
+		printf("%d...",i);
+		experiment();
+		critical_histogram[sample_critical] += 1;
+	}
+
+	//fprint_experiment();
+	fprint_histogram();
+
+	printf("\nSimulation complete. Press any key to exit.\n");
+
+	getchar();
+	return 0;
+}
+
+void experiment(void)
+{
 	long i, j, k;
-	double beta_step;
+	double beta_step, h, b, e, e2;
+	double h_max = 0.0;
 
-	// initialize
-	newlattice();								// initialize a lattice
-
+	newlattice();								
 	beta_step = (betamax - betamin) / (samples - 1);
-	if (coldstart)								// beta starting point and step sign
+	if (coldstart)								
 	{
 		beta = betamax;
 		beta_step = - beta_step;
@@ -103,7 +134,7 @@ int main()
 	// iterate over samples, runs, and Monte-Carlo steps
 	for (i = 0; i < samples; i++)
 	{
-		printf("Beta = %f\n",beta);
+		//printf("\tBeta = %f\n",beta);
 		beta_list[i] = beta;
 		for (k = 0; k < equlibriate; k++)
 				metropolis();
@@ -119,20 +150,28 @@ int main()
 		beta += beta_step;
 	}
 
-	// complete averaging and calculate heat capacity
-	
+	// complete averaging and calculate heat capacities
 	for (i = 0; i < samples; i++)
 	{
-		energy_list[i] /= runcount;
-		energy2_list[i] /= runcount;
+		b = beta_list[i];
+		e = energy_list[i] / runcount;
+		e2 = energy2_list[i] / runcount;
+
 		magnetiz_list[i] /= runcount;
-		heatcapacity_list[i] = Boltzmann * beta_list[i] * beta_list[i] * (energy2_list[i] - energy_list[i] * energy_list[i]);
+		energy_list[i] = e;
+		energy2_list[i] = e2;
+		h = Boltzmann * b *  b * (e2 - e * e);
+		heatcapacity_list[i] = h;
+
+		// screening for the critical point
+		if (h > h_max)
+		{
+			h_max = h;
+			beta_critical = b;
+			sample_critical = i;
+		}
 	}
 
-	printf("Simulation complete. Press any key to exit.\n");
-	fprint_results();
-	getchar();
-	return 0;
 }
 
 void newlattice(void)				// Prepare a new lattice
@@ -218,21 +257,18 @@ void metropolis(void)				// Select and flip a cell according to Metropolis
 void stats(void)					// Calculate the stats for the lattice 
 {
 	long i;
-	double e;
 	double sum_e = 0.0;
-	double sum_e2 = 0.0;
 	double sum_m = 0.0;
+	double z = modulus * 2.0;		// normalization factor includes 2.0 since each interaction energy has been counted twice
 	
 	for(i=0; i<modulus; i++)
 	{
 		sum_m += lattice[i] - 1;
-		e = cell_energy(i);
-		sum_e += e;
-		sum_e2 += e*e;
+		sum_e += cell_energy(i);
 	}
 
-	energy = sum_e / modulus / 2.0;				// divide by 2.0 since each interaction energy has been counted twice
-	energy2 = sum_e2 / modulus / 4.0;			// divide by 4.0 for the same reason since this is energy squared
+	energy = sum_e / z;						
+	energy2 = (sum_e *sum_e) / (z * z);
 	magnetiz = sum_m / modulus;
 
 }
@@ -253,14 +289,14 @@ void render(void)					// Display the lattice
 	}
 }
 
-void print_results(void)			// Output the latest stats
+void print_stats(void)			// Output the latest stats
 {
 	printf(" <magnetization> %f\n", magnetiz);
 	printf(" <energy> %f\n", energy);
 	printf(" <energy^2> %f\n", energy2);
 }
 
-void fprint_results(void)			// Output the results of a simulation run
+void fprint_experiment(void)			// Output the results of a simulation run
 {
 	FILE *fp;
 	int i;
@@ -268,10 +304,25 @@ void fprint_results(void)			// Output the results of a simulation run
 	fopen_s(&fp, "metro.txt","w");
 	if (fp != NULL)
 	{
-		fprintf(fp,"beta\t Magnetization\t Heat capacity\t Energy\n");
+		fprintf(fp,"Beta\tMagnetization\tHeat capacity\tEnergy\tEnergy^2\n");
 		for (i = 0; i < samples; i++)
-			fprintf(fp,"%f\t%f\t%f\t%f\n",beta_list[i],magnetiz_list[i],heatcapacity_list[i],energy_list[i]);
+			fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
 	fclose(fp);	
 	}
 
+}
+
+void fprint_histogram(void)				// Output the histogram of critical values of Beta
+{
+	FILE *fp;
+	int i;
+
+	fopen_s(&fp, "metro1.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Sample\tBeta\tCount\n");
+		for (i = 0; i < samples; i++)
+			fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
+	fclose(fp);	
+	}
 }
