@@ -5,14 +5,14 @@
 // http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
 
 // Preprocessor numeric constants
-#define dimensions 2				// maximum 4, assuming a span of 64
-#define span 16						// width of lattice along every dimension
-#define coldstart -1					// -1 = coldstart, 0 = hotstart
+#define dimensions 3				// maximum 4, assuming a span of 64
+#define span 8						// width of lattice along every dimension
+#define coldstart -1				// -1 = coldstart, 0 = hotstart
 #define betamax	0.5					// maximum value of beta
-#define betamin 0.3					// minimum value of beta
+#define betamin 0.0					// minimum value of beta
 #define samples 200					// # of samples between betamin and betamax
 #define	experiments 1				// # of separate experiments to compile
-#define Boltzmann 1.0				// Boltzmann constant (used only for scaling heat capacity)
+#define Boltzmann 150.0				// Boltzmann constant (used only for scaling heat capacity)
 #define runsteps 100000				// number of Monte Carlo steps between each check of the histogram
 #define	referencesteps 1000000		// number of Monte Carlo steps to establish the reference histogram
 #define reference_level 1000		// minimum count in the reference histogram to include an energy level
@@ -76,35 +76,6 @@ int experiment(void);				// Run a single experiment from betamin to betamax
 void fprint_histogram(void);		// Output the histogram of critical values of Beta
 void zero_hist_ref(void);			// initialize reference histogram 
 
-// Library routines
-unsigned long rnd(void)				// Return a random integer x between 0 and 1<<31
-{
-	static unsigned long X;
-	return X = (unsigned long) ((unsigned long long)X * 3141592621ULL + 1ULL);
-	// use the 64 integer type ULL to avoid premature truncation
-	// the modulus is provided by the typecast (unsigned long)
-}
-
-double rnd_double(void)
-{
-	return ((double) rnd() / 4294967295.0);
-}
-
-
-unsigned long rnd_long(long n)		// Return a random integer 0 <= x < n
-{
-	return (unsigned long) (rnd_double() * (double) n);
-}
-
-double abs_double(double x)			// abs for double precision numbers
-{
-	if (x > 0)
-		return x;
-	else
-		return -x;
-}
-
-// Metropolis algorithm implementation
 int main()
 {
 	long i;
@@ -169,70 +140,6 @@ int experiment()
 	return -1;
 }
 
-
-void newlattice(void)				// Prepare a new lattice
-{
-	long i;
-	long t = 0;
-
-	// calculate the total size of the lattice
-	modulus = (long) pow((double) span, dimensions);
-
-	// set up the array of reach, indicating the offsets to the nearest neighbour in each dimension
-	for (i = 0; i<dimensions; i++)
-		reach[i] = (long) pow((double) span, i);
-	
-	// prepare the lattice with either hot or cold start
-	for (i=0; i<modulus; ++i)
-	{
-		if (coldstart || (rnd() & (1<<31)))
-			lattice[i] = 2;
-		else
-			lattice[i] = 0;
-	}
-
-	stats();
-}
-
-long rnd_cell(void)					// Pick a random cell in the lattice
-{
-	return rnd_long(modulus);
-}
-
-void find_neighbours(long n)		// Find the nearest neighbours of the given cell
-{
-	int i;
-
-	for (i = 0; i<dimensions; i++)
-	{
-		// in each dimension, i, there are two neighbours at a distance reach[i] away
-		neighbours[2*i] = (n + reach[i] + modulus) % modulus;		// make sure to bring the offset back into range
-		neighbours[2*i+1] = (n - reach[i] + modulus) % modulus;
-	}
-}
-
-long sum_neighbours(void)			// Sum the states of the neighbours
-{
-	long i;
-	long e=0;
-
-	for (i=0; i < 2*dimensions; i++)
-		e += lattice[neighbours[i]] - 1;
-
-	return e;
-}
-
-long cell_energy(long n)			// Sum the interaction energy attributable to cell n
-{
-	find_neighbours(n);
-	return -1 *(lattice[n] - 1) * sum_neighbours();
-}
-
-void flip(long n)					// Flip cell n
-{
-	lattice[n] = 2 - lattice[n];
-}
-		
 void wanglandau(void)				// Select a trial cell and transition the lattice according to Wang Landau
 {
 	long flag = 0;
@@ -266,57 +173,6 @@ void wanglandau(void)				// Select a trial cell and transition the lattice accor
 		ln_g[indx(lattice_energy)] += ln_f;
 		hist[indx(lattice_energy)] += 1;
 		magnetiz_avg[indx(lattice_energy)] += abs_double(lattice_magnetiz);
-}
-
-void zero_dos(void)					// initialize density of states by setting ln_g[i] = 0 (=> g[i] = 1)
-{
-	long i;									// project settings will the direct optimizer to inline small functions
-
-	for (i = 0; i<modulus; i++)
-	{
-		ln_g[i] = 0.0;
-	}
-}
-
-void microaverage(void)				// calculate the microcanonical average magnetization at each energy level
-{
-	long i;
-
-	for (i = 0; i<=modulus; i++)
-		if (hist_ref[i] >= 0)
-			magnetiz_avg[i] /= (double) hist[i];
-}
-
-
-void normalize_dos(void)			// normalize the density states so that ln[ground state] = ln(2)
-{
-	double delta;
-	long i;
-
-	delta = ln_g[0] - ln_2;			// lowest energy state has 2 configuartions
-	for (i = 0; i<=modulus; i++)
-		ln_g[i] -= delta;			
-}
-
-void zero_hist(void)				// initialize histogram and the array used for the calculation of average magnetization
-{
-	long i;									// project settings will the direct optimizer to inline small functions
-
-	for (i = 0; i<=modulus; i++)
-	{
-		hist[i] = 0;
-		magnetiz_avg[i] = 0;
-	}
-}
-
-void zero_hist_ref(void)			// initialize reference histogram 
-{
-	long i;									// project settings will the direct optimizer to inline small functions
-
-	for (i = 0; i<=modulus; i++)
-	{
-		hist_ref[i] = 0;
-	}
 }
 
 long flat(void)						// check the flatness of the histogram against the criterion
@@ -405,15 +261,225 @@ void num_sums(void)															// perform the numerical sums over the density
 
 		beta += betastep;
 	}
-}			
+}		
 
-void stats(void)					// Calculate the stats for the lattice 
+void zero_dos(void)					// initialize density of states by setting ln_g[i] = 0 (=> g[i] = 1)
+{
+	long i;									// project settings will the direct optimizer to inline small functions
+
+	for (i = 0; i<modulus; i++)
+	{
+		ln_g[i] = 0.0;
+	}
+}
+
+void zero_hist(void)				// initialize histogram and the array used for the calculation of average magnetization
+{
+	long i;									// project settings will the direct optimizer to inline small functions
+
+	for (i = 0; i<=modulus; i++)
+	{
+		hist[i] = 0;
+		magnetiz_avg[i] = 0;
+	}
+}
+
+void zero_hist_ref(void)			// initialize reference histogram 
+{
+	long i;									// project settings will the direct optimizer to inline small functions
+
+	for (i = 0; i<=modulus; i++)
+	{
+		hist_ref[i] = 0;
+	}
+}
+
+void normalize_dos(void)			// normalize the density states so that ln[ground state] = ln(2)
+{
+	double delta;
+	long i;
+
+	delta = ln_g[0] - ln_2;			// lowest energy state has 2 configuartions
+	for (i = 0; i<=modulus; i++)
+		ln_g[i] -= delta;			
+}
+
+void microaverage(void)				// calculate the microcanonical average magnetization at each energy level
+{
+	long i;
+
+	for (i = 0; i<=modulus; i++)
+		if (hist_ref[i] >= 0)
+			magnetiz_avg[i] /= (double) hist[i];
+}
+
+void print_stats(void)			// Output the latest stats
+{
+	long i;
+
+	printf("hist\tlg_g\tmag\n");
+	for (i = 0; i <= modulus; i++)
+		printf("%d\t%f\t%f\n",hist[i],ln_g[i],magnetiz_avg[i]);
+	printf("\n");
+}
+
+void fprint_experiment(void)			// Output the results of a simulation run
+{
+	FILE *fp;
+	int i;
+
+	fopen_s(&fp, "wanglandau-experiment.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Beta\t Magnetization\tHeat capacity\tEnergy\tEnergy^2\n");
+		for (i = 0; i < samples; i++)
+			fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
+	/*for (i = 0; i < samples; i++)
+		fprintf(fp,"%f\t%f\n", beta_list[i], magnetiz_list[i]);
+	for (i = 0; i < samples; i++)
+		fprintf(fp,"%f\t%f\n", beta_list[i], energy_list[i]);
+	for (i = 0; i < samples; i++)
+		fprintf(fp,"%f\t%E\n", beta_list[i], heatcapacity_list[i]);
+	*/
+	fclose(fp);	
+	}
+
+	fopen_s(&fp, "wanglandau-dos.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Energy\tln(density of states)\n");
+		for (i = 0; i <= modulus; i++)
+			fprintf(fp,"%d\t%f\n", 4*i - 2*modulus, ln_g[i]);
+	fclose(fp);	
+	}
+
+}
+
+void fprint_histogram(void)				// Output the histogram of critical values of Beta
+{
+	FILE *fp;
+	int i;
+
+	fopen_s(&fp, "wanglandau-criticalbeta.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Sample\tBeta\tCount\n");
+		for (i = 0; i < samples; i++)
+			fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
+	fclose(fp);	
+	}
+}
+
+// Library routines
+
+// Return a random integer x between 0 and 1<<31
+unsigned long rnd(void)				
+{
+	static unsigned long X;
+	return X = (unsigned long) ((unsigned long long)X * 3141592621ULL + 1ULL);
+	// use the 64 integer type ULL to avoid premature truncation
+	// the modulus is provided by the typecast (unsigned long)
+}
+
+double rnd_double(void)
+{
+	return ((double) rnd() / 4294967295.0);
+}
+
+// Return a random integer 0 <= x < n
+unsigned long rnd_long(long n)		
+{
+	return (unsigned long) (rnd_double() * (double) n);
+}
+
+// abs for double precision numbers
+double abs_double(double x)			
+{
+	if (x > 0)
+		return x;
+	else
+		return -x;
+}
+
+// Ising routines
+
+// Prepare a new lattice
+void newlattice(void)				
+{
+	long i;
+	long t = 0;
+
+	// calculate the total size of the lattice
+	modulus = (long) pow((double) span, dimensions);
+
+	// set up the array of reach, indicating the offsets to the nearest neighbour in each dimension
+	for (i = 0; i<dimensions; i++)
+		reach[i] = (long) pow((double) span, i);
+	
+	// prepare the lattice with either hot or cold start
+	for (i=0; i<modulus; ++i)
+	{
+		if (coldstart || (rnd() & (1<<31)))
+			lattice[i] = 2;
+		else
+			lattice[i] = 0;
+	}
+
+	stats();
+}
+
+// Pick a random cell in the lattice
+long rnd_cell(void)					
+{
+	return rnd_long(modulus);
+}
+
+// Find the nearest neighbours of the given cell
+void find_neighbours(long n)		
+{
+	int i;
+
+	for (i = 0; i<dimensions; i++)
+	{
+		// in each dimension, i, there are two neighbours at a distance reach[i] away
+		neighbours[2*i] = (n + reach[i] + modulus) % modulus;		// make sure to bring the offset back into range
+		neighbours[2*i+1] = (n - reach[i] + modulus) % modulus;
+	}
+}
+
+// Sum the states of the neighbours
+long sum_neighbours(void)			
+{
+	long i;
+	long e=0;
+
+	for (i=0; i < 2*dimensions; i++)
+		e += lattice[neighbours[i]] - 1;
+
+	return e;
+}
+
+// Sum the interaction energy attributable to cell n
+long cell_energy(long n)			
+{
+	find_neighbours(n);
+	return -1 *(lattice[n] - 1) * sum_neighbours();
+}
+
+// Flip cell n
+void flip(long n)					
+{
+	lattice[n] = 2 - lattice[n];
+}
+
+// Calculate the stats for the lattice 
+void stats(void)					
 {
 	long i;
 	double e;
 	double sum_e = 0.0;
 	double sum_m = 0.0;
-	double z = modulus * 2.0;		// normalization factor includes 2.0 since each interaction energy has been counted twice
+	double z = modulus * 2.0;					// normalization factor includes 2.0 since each interaction energy has been counted twice
 	
 	for(i=0; i<modulus; i++)
 	{
@@ -433,7 +499,8 @@ void stats(void)					// Calculate the stats for the lattice
 
 }
 
-void render(void)					// Display the lattice
+// Display the lattice
+void render(void)					
 {
 	long i, j, n;
 	n = 0;
@@ -446,62 +513,5 @@ void render(void)					// Display the lattice
 			else
 				printf("- ");
 		printf("\n");
-	}
-}
-
-void print_stats(void)			// Output the latest stats
-{
-	long i;
-
-	printf("hist\tlg_g\tmag\n");
-	for (i = 0; i <= modulus; i++)
-		printf("%d\t%f\t%f\n",hist[i],ln_g[i],magnetiz_avg[i]);
-	printf("\n");
-}
-
-void fprint_experiment(void)			// Output the results of a simulation run
-{
-	FILE *fp;
-	int i;
-
-	fopen_s(&fp, "wanglandau.txt","w");
-	if (fp != NULL)
-	{
-		fprintf(fp,"Beta\t Magnetization\tHeat capacity\tEnergy\tEnergy^2\n");
-		for (i = 0; i < samples; i++)
-			fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
-	/*for (i = 0; i < samples; i++)
-		fprintf(fp,"%f\t%f\n", beta_list[i], magnetiz_list[i]);
-	for (i = 0; i < samples; i++)
-		fprintf(fp,"%f\t%f\n", beta_list[i], energy_list[i]);
-	for (i = 0; i < samples; i++)
-		fprintf(fp,"%f\t%E\n", beta_list[i], heatcapacity_list[i]);
-	*/
-	fclose(fp);	
-	}
-
-	fopen_s(&fp, "wanglandau3.txt","w");
-	if (fp != NULL)
-	{
-		fprintf(fp,"Energy\tln(density of states)\n");
-		for (i = 0; i <= modulus; i++)
-			fprintf(fp,"%d\t%f\n", 4*i - 2*modulus, ln_g[i]);
-	fclose(fp);	
-	}
-
-}
-
-void fprint_histogram(void)				// Output the histogram of critical values of Beta
-{
-	FILE *fp;
-	int i;
-
-	fopen_s(&fp, "wanglandau2.txt","w");
-	if (fp != NULL)
-	{
-		fprintf(fp,"Sample\tBeta\tCount\n");
-		for (i = 0; i < samples; i++)
-			fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
-	fclose(fp);	
 	}
 }

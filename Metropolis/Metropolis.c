@@ -5,17 +5,17 @@
 // http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
 
 // Preprocessor numeric constants
-#define dimensions 2				// maximum 4, assuming a span of 64
-#define span 16						// width of lattice along every dimension
-#define coldstart 0					// -1 = coldstart, 0 = hotstart
-#define betamax	0.45				// maximum value of beta
-#define betamin 0.42				// minimum value of beta
-#define samples 50					// # of samples between betamin and betamax
-#define	experiments 1000			// # of separate experiments to compile
+#define dimensions 3				// maximum 4, assuming a span of 64
+#define span 8						// width of lattice along every dimension
+#define coldstart -1				// -1 = coldstart, 0 = hotstart
+#define betamax	0.5				// maximum value of beta
+#define betamin 0.0				// minimum value of beta
+#define samples 200					// # of samples between betamin and betamax
+#define	experiments 1			// # of separate experiments to compile
 #define equlibriate 100000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
-#define runcount 1000				// # of averaging runs at each value of beta
+#define runcount 10000				// # of averaging runs at each value of beta
 #define runsteps 10000				// # of Monte Carlo steps between each averaging run
-#define Boltzmann 5.0				// Boltzmann constant (used only for scaling heat capacity)
+#define Boltzmann 150.0				// Boltzmann constant (used only for scaling heat capacity)
 	
 // Global variables
 double beta;						// Thermodynamic beta  = 1 / T
@@ -34,7 +34,6 @@ double beta_list[samples];
 double heatcapacity_list[samples];
 long critical_histogram[samples];	// histogram of the location of critical beta (sample no.) over many experiments
 
-
 // Function declarations
 unsigned long rnd(void);			// Return a random integer x between 0 and 1<<31
 double rnd_double(void);			// Return a random double 0 <= x < 1
@@ -47,59 +46,30 @@ void find_neighbours(long n);		// Find the nearest neighbours of the cell
 long sum_neighbours(void);			// Sum the states of the neighbours
 long cell_energy(long n);			// Sum the interaction energy attributable to cell n
 void flip(long);					// Flip cell n
-void metropolis(void);				// Select and flip a cell according to Metropolis
 void stats(void);					// Calculate the stats for the lattice 
+void experiment(void);				// Run a single experiment from betamin to betamax
+void metropolis(void);				// Select and flip a cell according to Metropolis
 void print_stats(void);				// Output the latest stats
 void fprint_experiment(void);		// Output the results of a simulation run
-void experiment(void);				// Run a single experiment from betamin to betamax
 void fprint_histogram(void);		// Output the histogram of critical values of Beta
 
-// Library routines
-unsigned long rnd(void)				// Return a random integer x between 0 and 1<<31
-{
-	static unsigned long X;
-	return X = (unsigned long) ((unsigned long long)X * 3141592621ULL + 1ULL);
-	// use the 64 integer type ULL to avoid premature truncation
-	// the modulus is provided by the typecast (unsigned long)
-}
-
-double rnd_double(void)
-{
-	return ((double) rnd() / 4294967295.0);
-}
-
-
-unsigned long rnd_long(long n)		// Return a random integer 0 <= x < n
-{
-	return (unsigned long) (rnd_double() * (double) n);
-}
-
-double abs_double(double x)			// abs for double precision numbers
-{
-	if (x > 0)
-		return x;
-	else
-		return -x;
-}
-
-// Metropolis algorithm implementation
 int main()
 {
 	long i;
 
-	for (i = 0; i < samples; i++)				// zero the histogram
+	for (i = 0; i < samples; i++)
 	{
 		critical_histogram[i] = 0;
 	}
 
-	for (i = 0; i < experiments; i++)				// zero the histogram
+	for (i = 0; i < experiments; i++)	
 	{
 		printf("%d...",i);
 		experiment();
 		critical_histogram[sample_critical] += 1;
 	}
 
-	//fprint_experiment();
+	fprint_experiment();
 	fprint_histogram();
 
 	printf("\nSimulation complete. Press any key to exit.\n");
@@ -124,7 +94,8 @@ void experiment(void)
 	else
 		beta = betamin;
 
-	for (i = 0; i < samples; i++)				// zero the averaging arrays
+	// zero the averaging arrays
+	for (i = 0; i < samples; i++)				
 	{
 		energy_list[i] = 0.0;
 		energy2_list[i] = 0.0;
@@ -173,7 +144,108 @@ void experiment(void)
 	}
 
 }
+		
+// Select and flip a cell according to Metropolis
+void metropolis(void)				
+{
+	long n, e;
+	double p;
 
+	n = rnd_cell();
+	e = cell_energy(n);
+	if (e < 0)					// a flip will raise the energy of the system
+	{
+		p = exp(beta * e * 2.0);
+		if (rnd_double() < p)
+		{
+			flip(n);
+		}
+	}
+	else
+		flip(n);
+
+}
+
+// Data export routines
+
+// Output the latest stats
+void print_stats(void)			
+{
+	printf(" <magnetization> %f\n", magnetiz);
+	printf(" <energy> %f\n", energy);
+	printf(" <energy^2> %f\n", energy2);
+}
+
+// Output the results of a simulation run
+void fprint_experiment(void)			
+{
+	FILE *fp;
+	int i;
+
+	fopen_s(&fp, "metro-experiment.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Beta\tMagnetization\tHeat capacity\tEnergy\tEnergy^2\n");
+		if (coldstart)
+			for (i = samples-1; i >= 0; i--)
+				fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
+		else
+			for (i = 0; i < samples; i++)
+				fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
+	fclose(fp);	
+	}
+
+}
+
+// Output the histogram of critical values of Beta
+void fprint_histogram(void)				
+{
+	FILE *fp;
+	int i;
+
+	fopen_s(&fp, "metro-criticalbeta.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Sample\tBeta\tCount\n");
+		if (coldstart)
+			for (i = samples-1; i >= 0; i--)
+				fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
+		else
+			for (i = 0; i < samples; i++)
+				fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
+	fclose(fp);	
+	}
+}
+
+// Utility routines
+unsigned long rnd(void)				// Return a random integer x between 0 and 1<<31
+{
+	static unsigned long X;
+	return X = (unsigned long) ((unsigned long long)X * 3141592621ULL + 1ULL);
+	// use the 64 integer type ULL to avoid premature truncation
+	// the modulus is provided by the typecast (unsigned long)
+}
+
+double rnd_double(void)
+{
+	return ((double) rnd() / 4294967295.0);
+}
+
+
+unsigned long rnd_long(long n)		// Return a random integer 0 <= x < n
+{
+	return (unsigned long) (rnd_double() * (double) n);
+}
+
+double abs_double(double x)			// abs for double precision numbers
+{
+	if (x > 0)
+		return x;
+	else
+		return -x;
+}
+
+// Ising model routines
 void newlattice(void)				// Prepare a new lattice
 {
 	long i;
@@ -233,26 +305,6 @@ void flip(long n)					// Flip cell n
 {
 	lattice[n] = 2 - lattice[n];
 }
-			
-void metropolis(void)				// Select and flip a cell according to Metropolis
-{
-	long n, e;
-	double p;
-
-	n = rnd_cell();
-	e = cell_energy(n);
-	if (e < 0)					// a flip will raise the energy of the system
-	{
-		p = exp(beta * e * 2.0);
-		if (rnd_double() < p)
-		{
-			flip(n);
-		}
-	}
-	else
-		flip(n);
-
-}
 
 void stats(void)					// Calculate the stats for the lattice 
 {
@@ -286,43 +338,5 @@ void render(void)					// Display the lattice
 			else
 				printf("- ");
 		printf("\n");
-	}
-}
-
-void print_stats(void)			// Output the latest stats
-{
-	printf(" <magnetization> %f\n", magnetiz);
-	printf(" <energy> %f\n", energy);
-	printf(" <energy^2> %f\n", energy2);
-}
-
-void fprint_experiment(void)			// Output the results of a simulation run
-{
-	FILE *fp;
-	int i;
-
-	fopen_s(&fp, "metro.txt","w");
-	if (fp != NULL)
-	{
-		fprintf(fp,"Beta\tMagnetization\tHeat capacity\tEnergy\tEnergy^2\n");
-		for (i = 0; i < samples; i++)
-			fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
-	fclose(fp);	
-	}
-
-}
-
-void fprint_histogram(void)				// Output the histogram of critical values of Beta
-{
-	FILE *fp;
-	int i;
-
-	fopen_s(&fp, "metro1.txt","w");
-	if (fp != NULL)
-	{
-		fprintf(fp,"Sample\tBeta\tCount\n");
-		for (i = 0; i < samples; i++)
-			fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
-	fclose(fp);	
 	}
 }
