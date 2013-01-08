@@ -5,21 +5,21 @@
 // http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
 
 // Preprocessor numeric constants
-#define dimensions 4				// maximum 4, assuming a span of 64
-#define span 8						// width of lattice along every dimension
+#define dimensions 2				// maximum 4, assuming a span of 64
+#define span 16						// width of lattice along every dimension
 #define coldstart 0					// -1 = coldstart, 0 = hotstart
-#define betamax	0.25					// maximum value of beta
-#define betamin 0.0					// minimum value of beta
+#define betamax	0.45				// maximum value of beta
+#define betamin 0.41				// minimum value of beta
 #define samples 200					// # of samples between betamin and betamax
-#define	experiments 1				// # of separate experiments to compile
-#define Boltzmann 1500.0				// Boltzmann constant (used only for scaling heat capacity)
+#define	experiments 10000			// # of separate experiments to compile
+#define Boltzmann 1.0				// Boltzmann constant (used only for scaling heat capacity)
 #define runsteps 100000				// number of Monte Carlo steps between each check of the histogram
-#define	referencesteps 10000000000		// number of Monte Carlo steps to establish the reference histogram
+#define	referencesteps 1000000		// number of Monte Carlo steps to establish the reference histogram
 #define reference_level 1000		// minimum count in the reference histogram to include an energy level
 #define flatness_criterion 0.80		// criterion for testing the flatness of the histogram
-#define iterationlimit 100000			// criterion for avoiding stuck random walks
+#define iterationlimit 1000			// criterion for avoiding stuck random walks
 #define ln_f_initial 1.0			// initial value of the adjustment factor
-#define ln_f_final .0001			// final value of the adjustment factor
+#define ln_f_final .00001			// final value of the adjustment factor
 #define ln_2 0.6931471806			// ln_g[lowest energy configuration] = ln(2), for normalization
 
 // Macro for addressing the density of states array with an energy level
