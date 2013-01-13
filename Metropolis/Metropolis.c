@@ -3,7 +3,7 @@
 
 // Most commonly adjusted paramaters
 #define dimensions 3				// maximum 4, assuming a span of 64
-#define span 16						// width of lattice along every dimension
+#define span 8						// width of lattice along every dimension
 #define Tmin 1.0					// minimum value of beta
 #define Tmax 5.0					// maximum value of beta
 #define samples 200					// # of samples between betamin and betamax
