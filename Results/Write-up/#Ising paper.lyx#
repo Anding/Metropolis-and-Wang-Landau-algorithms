@@ -1,0 +1,1073 @@
+#LyX 2.0 created this file. For more info see http://www.lyx.org/
+\lyxformat 413
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\maintain_unincluded_children false
+\language british
+\language_package default
+\inputencoding auto
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 1
+\use_mhchem 1
+\use_mathdots 1
+\cite_engine basic
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date true
+\use_refstyle 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\leftmargin 2cm
+\topmargin 3.5cm
+\rightmargin 2cm
+\bottommargin 4cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Comparison of the Metropolis and Wang Landau algorithms for computing the
+ Ising model
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Standard
+The Ising model is a system in statistical physics that can be used to investiga
+te phase transitions using computational algorithms.
+ A simple instance of the Ising model might be a two dimensional lattice
+ of atoms, each of which can be in one of only two possible states, There
+ is an interaction energy between every atom and each of its nearest neighbors
+ that can be expressed by the following Hamiltonian 
+\begin_inset Formula 
+\[
+H=-J\,\sum_{i,j}S_{i}S_{j}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $S_{i}=\pm1$
+\end_inset
+
+ is the state of the atom at site 
+\begin_inset Formula $i$
+\end_inset
+
+ , 
+\begin_inset Formula $\sum_{ij}$
+\end_inset
+
+indicates the sum over the four nearest neighbours, and 
+\begin_inset Formula $J$
+\end_inset
+
+ is a constant with units of energy.
+ 
+\end_layout
+
+\begin_layout Standard
+The Ising model may describe a ferromagnetic system, in which case 
+\begin_inset Formula $S_{i}$
+\end_inset
+
+ is the magnetization of atom 
+\begin_inset Formula $i$
+\end_inset
+
+ , 
+\begin_inset Formula $J\,>\,0$
+\end_inset
+
+ , and neighbouring spins are at a lower energy when aligned.
+ If the lattice is allowed to equlibriate at a certain temperature then
+ the total interaction energy and magnetization will, on average, reach
+ steady values.
+ It is observed that at sufficiently low temperatures the atomic spins are
+ generally all aligned, resulting in the lattice showing an overall magnetizatio
+n.
+ At sufficiently high temperatures the spins are generally at random and
+ the lattice has no overall magnetization.
+ In two or more dimensions there is a certain critical temperature at which
+ a phase transition occurs between these two regions of different magnetization.
+\end_layout
+
+\begin_layout Standard
+The Ising model in two dimensions was analytically solved by Lars Onsanger
+ in 1944 who showed that the phase transition occurs at a temperature given
+ by
+\begin_inset Formula 
+\[
+k_{B}T/J\,=\,2/\ln(1+\sqrt{2})\,=2.269185...
+\]
+
+\end_inset
+
+ The Ising model may also be investigated using computational algorithms.
+ The first technique commonly applied was the Metropolis algorithm
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Metropolis"
+
+\end_inset
+
+, which directly simulates fluctuations in the lattice using a Monte-Carlo
+ process.
+ In successive steps atoms in the lattice are selected at random and their
+ spins may be flipped according to certain rules that take into account
+ the potential change in lattice energy and the temperature.
+ By operating the algorithm with suitable averaging over a range of temperatures
+, the characteristics of the Ising model can be measured.
+ In addition, the Metropolis algorithm allows the lattice and its fluctuations
+ to be visualized either as snapshots at certain temperatures or as a continuing
+ animation.
+\end_layout
+
+\begin_layout Standard
+The Metropolis algorithm is a very elegant and broadly used computational
+ technique, but an alternative approach offering higher computational efficiency
+ was proposed by Wang and Landau in 2001
+\begin_inset CommandInset citation
+LatexCommand cite
+key "WangLandau"
+
+\end_inset
+
+.
+ The Wang Landau algorithm is also based on a Monte-Carlo process, but this
+ time the fluctuations of the Ising model are not simulated directly.
+ Rather, a random walk technique is used to count how many alternative configura
+tions of the lattice are available at each possible energy level, i.e.
+ the density of states as a function of energy.
+ Once the density of states has been determined, a numerical integration
+ is performed over all the possible energy levels to calculate the averages
+ of magnetization and energy.
+ 
+\end_layout
+
+\begin_layout Standard
+Since the original algorithm was originally published various studies have
+ looked at its effectiveness and at potential improvements.
+ Zhou and Bhatt
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Zhou"
+
+\end_inset
+
+ gave a proof of the convergence of the Wang Landau algorithm and suggested
+ a optimization strategy.
+ Schutz and Landau
+\begin_inset CommandInset citation
+LatexCommand cite
+key "SchutzLandau"
+
+\end_inset
+
+ investigated how the density of states could be established by conducting
+ multiple random walks over adjacent restricted energy ranges without incurring
+ boundary effects.
+ Lee, Okabe and Landau
+\begin_inset CommandInset citation
+LatexCommand cite
+key "LeeLandau"
+
+\end_inset
+
+ derived an expression for the residual error of the Wang Landau algorithm
+ and as a result identified the central role of the histogram accumulated
+ during the density of states calculation in the overall accuracy of the
+ method.
+ Recently, Caparica and Cunha-Netto
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brazilians"
+
+\end_inset
+
+ conducted an extensive study of the impact of various implementation adjustment
+s on the accuracy and precision of the algorithm.
+ A central element of their method was to run the algorithm multiple times
+ and obtain the histogram of the location of the peak of the specific heat
+ capacity.
+\end_layout
+
+\begin_layout Itemize
+Basic overview of the project work
+\end_layout
+
+\begin_layout Itemize
+Hint at results
+\end_layout
+
+\begin_layout Section
+Theory
+\end_layout
+
+\begin_layout Subsection
+Solving the Ising model
+\end_layout
+
+\begin_layout Standard
+Although Onsanger's solution for critical temperature of the two dimensional
+ Ising model is available, it may still be more straightforward to approach
+ the problem of solving the Ising model by using a computer to generate
+ numerical solutions rather than by following the theoretical approach.
+ For the Ising model in three dimensions or more, only numerical solution
+ are available.
+ 
+\end_layout
+
+\begin_layout Standard
+The number of possible configurations of an Ising lattice is very large,
+ 
+\begin_inset Formula $2^{L^{D}}$
+\end_inset
+
+for a 
+\begin_inset Formula $D$
+\end_inset
+
+ dimensional lattice spanning 
+\begin_inset Formula $L$
+\end_inset
+
+ atoms in each direction.
+ For this reason it is not feasible for a compuational method to evaluate
+ each configuation directly (Table 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:partition function"
+
+\end_inset
+
+).
+ Instead, the Metropolis and Wang Landau algorithms take a random walk through
+ the space of alternaltive lattice configurations (the state space) and
+ make measurements on a sample basis.
+ Accurate determinations for the characterictistics of the Ising model can
+ be had once sufficient measurements have been accumulated.
+ This general approach is called a Monte-Carlo method.
+\end_layout
+
+\begin_layout Standard
+The key quantities that the algorithms should determine across the range
+ of temperatures under investigation include the average magnetization,
+ the average interaction energy, and the average heat capacity per atom.
+ Magnetization and interation energy can be measured directly from the lattice.
+ The heat capacity is related to the energy, 
+\begin_inset Formula $E$
+\end_inset
+
+, by 
+\begin_inset Formula 
+\[
+C=\frac{k_{B}}{T^{2}}\left(\left\langle E^{2}\right\rangle -\left\langle E\right\rangle {}^{2}\right)
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The critical temperature is observed to occur at the point where the heat
+ capacity reaches a maximum, so by evaluating the heat capacity at each
+ temperature the algorithms can also determine the critical temperature
+ of the model.
+\end_layout
+
+\begin_layout Subsection
+The Metropolis algorithm
+\end_layout
+
+\begin_layout Standard
+The Metropolis algorithm is a direct simulation of the physical system.
+ It sets up a lattice at a given termperature and follows its fluctuations
+ in discrete steps of time.
+ The algorithm proceeds as follows:
+\end_layout
+
+\begin_layout Enumerate
+Set the current temperature
+\end_layout
+
+\begin_layout Enumerate
+Create a new lattice in the initial configuration.
+ In a 
+\begin_inset Quotes eld
+\end_inset
+
+hot start
+\begin_inset Quotes erd
+\end_inset
+
+ the lattice spins are initially set at random.
+ In a 
+\begin_inset Quotes eld
+\end_inset
+
+cold start
+\begin_inset Quotes erd
+\end_inset
+
+ the lattice spins are initially aligned
+\end_layout
+
+\begin_layout Enumerate
+Select one candidate spin in the lattice at random and calculate the energy
+ change, 
+\begin_inset Formula $\triangle E$
+\end_inset
+
+ , that would result from flipping that spin
+\end_layout
+
+\begin_layout Enumerate
+Apply the following rules to determine whether to flip the candidate spin.
+ If 
+\begin_inset Formula $\triangle E\,<\,0$
+\end_inset
+
+ , then flip.
+ If 
+\begin_inset Formula $\triangle E\,>\,0$
+\end_inset
+
+ , then flip with probability
+\begin_inset Formula $p=e^{-\triangle E/k_{B}T}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Periodically measure the average magnetization, 
+\begin_inset Formula $\left\langle m\right\rangle $
+\end_inset
+
+, the average energy, 
+\begin_inset Formula $\left\langle E\right\rangle $
+\end_inset
+
+, and the average energy squared, 
+\begin_inset Formula $\left\langle E^{2}\right\rangle ,$
+\end_inset
+
+ for the lattice
+\end_layout
+
+\begin_layout Enumerate
+Return to step 3 until sufficient measurements have been accumulated for
+ the current temperature
+\end_layout
+
+\begin_layout Enumerate
+Return to step 1 until the relevant range of temperatures has been examined
+\end_layout
+
+\begin_layout Subsection
+The Wang Landau algorithm
+\end_layout
+
+\begin_layout Standard
+The Wang Landau algorithm effectively detemines the partition function of
+ the system and then uses it in a numerical summation to calculate the lattice
+ characteristics.
+ Consider two expressions for the partition function, 
+\begin_inset Formula $Z$
+\end_inset
+
+, as follows
+\begin_inset Formula 
+\[
+Z\,=\,\sum_{\sigma}e^{-E\left(\sigma\right)/k_{B}T}\,=\,\sum_{E}g\left(E\right)e^{-E/k_{B}T}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In the first case the partition function is computed over each available
+ state, 
+\begin_inset Formula $\sigma$
+\end_inset
+
+.
+ As previously metioned, the total number of available states will be 
+\begin_inset Formula $2^{L^{D}}$
+\end_inset
+
+, which is too many to evaluate.
+ In the second case the partition function is computed over each available
+ energy, 
+\begin_inset Formula $E$
+\end_inset
+
+ , and makes use of the density of states, 
+\begin_inset Formula $g\left(E\right)$
+\end_inset
+
+.
+ It can be shown by considering the configurations of a lattice that the
+ total number of available energy levels is 
+\begin_inset Formula 
+\[
+1+\frac{1}{2}D.L^{D}
+\]
+
+\end_inset
+
+which is a much smaller quantity than the total number of states (Table
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "tab:partition function"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="4">
+<features tabularvalignment="middle">
+<column alignment="right" valignment="top" width="0pt">
+<column alignment="right" valignment="top" width="0pt">
+<column alignment="right" valignment="top" width="0">
+<column alignment="right" valignment="top" width="0">
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="right" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Dimensions, 
+\begin_inset Formula $D$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Lattice span, 
+\begin_inset Formula $L$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Available states
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" bottomline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Available energy levels
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.8\times10^{19}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $65$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $16$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.1\times10^{77}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $257$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $2$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $32$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.8\times10^{308}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1025$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $3$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.3\times10^{154}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $769$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topspace="0.2cm" bottomspace="0.2cm">
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $4$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $1.0\times10^{1233}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="right" valignment="top" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\begin_inset Formula $8193$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:partition function"
+
+\end_inset
+
+Total number of available energy levels for different Ising lattices
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Wang Landau algorithm determines the density of states through a random
+ walk process.
+ At each step the probability of moving from the current configuration to
+ a new candidate configuration is 
+\shape italic
+inversely proportional
+\shape default
+ to their relative density of states.
+ A histogram is calculated to track the number of visits to states at each
+ energy level.
+ When the histogram become flat it indicates that the density of states
+ has been properly determined to within the given level of accuracy.
+ Since the density of states is not initially known, the starting condition
+ for all 
+\begin_inset Formula $E$
+\end_inset
+
+ is 
+\begin_inset Formula $g\left(E\right)=1$
+\end_inset
+
+ .
+ An adjustment factor is added to increase each density of states each time
+ a certain energy is visited.
+ 
+\end_layout
+
+\begin_layout Standard
+The algorithm proceeds as follows:
+\end_layout
+
+\begin_layout Enumerate
+Set
+\begin_inset Formula $g\left(E\right)=1$
+\end_inset
+
+ for all 
+\begin_inset Formula $E$
+\end_inset
+
+ and set the initial value of the adjustment factor, 
+\begin_inset Formula $f$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Create a new lattice in the initial configuration with lattice energy 
+\begin_inset Formula $E_{1}$
+\end_inset
+
+ .
+ Hotstart and coldstart are as for the Metropolis algorithm
+\end_layout
+
+\begin_layout Enumerate
+Select one candidate spin in the lattice at random and calculate the lattice
+ energy, 
+\begin_inset Formula $E_{2},$
+\end_inset
+
+that would result from flipping that spin
+\end_layout
+
+\begin_layout Enumerate
+Flip the spin with probability, 
+\begin_inset Formula $p\,=\,\min\left(g\left(E_{1}\right)/g\left(E_{2}\right),1\right)$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+The current energy of the lattice is labeled 
+\begin_inset Formula $E_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Update the density of the current state with 
+\begin_inset Formula $g\left(E_{1}\right)\,=\, g\left(E_{1}\right)*f$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Update the histogram that records visits to the available energy levels
+ with 
+\begin_inset Formula $H\left(E\right)\,=\, H\left(E\right)+1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Periodically test the histogram for flatness using a certain flatness criterion,
+ say 80%
+\end_layout
+
+\begin_layout Enumerate
+Return to step 3 until the histogram satisfies the flatness criterion
+\end_layout
+
+\begin_layout Enumerate
+Reduce the adjustment factor, 
+\begin_inset Formula $f$
+\end_inset
+
+ , and zero the histogram with 
+\begin_inset Formula $H\left(E\right)\,=\,0$
+\end_inset
+
+ , for all 
+\begin_inset Formula $E$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Enumerate
+Return to step 3 until the adjustment factor is below a predefined final
+ value
+\end_layout
+
+\begin_layout Enumerate
+Normalize the density of states by recognizing that the lowest energy configurat
+ion has a density of states of 
+\begin_inset Formula $2$
+\end_inset
+
+, (i.e.
+ all spins aligned in either one of two ways)
+\end_layout
+
+\begin_layout Enumerate
+Use a numerical summation with the partition function and the calculated
+ density of states to determine the average values of energy, magnetization,
+ and heat capacity.
+ For example the average energy of the lattice at a certain temperature
+ is given by
+\begin_inset Formula $\left\langle E\right\rangle \,=\,\sum_{E}E.g\left(E\right)e^{-E/k_{B}T}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Computational implementation
+\end_layout
+
+\begin_layout Section
+Results
+\end_layout
+
+\begin_layout Section
+Discussion
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "1"
+key "Metropolis"
+
+\end_inset
+
+Metropolis, N., Rosenbuth, A.W., Rosenbuth fvM.N., Teller, A.H., Teller, E., J.
+ Chem.
+ Phys.
+ 21, 1087 (1953)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "2"
+key "WangLandau"
+
+\end_inset
+
+Wang, F., & Landau, D.
+ P.
+ (2001).
+ An efficient, multiple range random walk algorithm to calculate the density
+ of states, 30602, 1–4.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "3"
+key "Zhou"
+
+\end_inset
+
+Zhou, C., & Bhatt, R.
+ N.
+ (2003).
+ Understanding and Improving the Wang-Landau Algorithm.
+ Physical Review E - Statistical, Nonlinear and Soft Matter Physics, 72(2
+ Pt 2)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "4"
+key "SchutzLandau"
+
+\end_inset
+
+Schulz, B.
+ J., Binder, K., Müller, M., & Landau, D.
+ P.
+ (2003).
+ Avoiding boundary effects in Wang-Landau sampling.
+ Physical Review E - Statistical, Nonlinear and Soft Matter Physics, 67(6
+ Pt 2)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "5"
+key "LeeLandau"
+
+\end_inset
+
+Lee, H.
+ K., Okabe, Y., & Landau, D.
+ P.
+ (2005).
+ Convergence and Refinement of the Wang-Landau Algorithm.
+ Computer Physics Communications, 175(1)
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "6"
+key "Brazilians"
+
+\end_inset
+
+Caparica, A., & Cunha-Netto, A.
+ (2012).
+ Wang-Landau sampling: Improving accuracy.
+ Physical Review E, 85(4), 1–9.
+\end_layout
+
+\end_body
+\end_document

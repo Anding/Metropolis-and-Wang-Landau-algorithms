@@ -1,25 +1,23 @@
 #include <stdio.h>
 #include <math.h>
 
-// Helpful resource
-// http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
-
-// Preprocessor numeric constants
-#define dimensions 2				// maximum 4, assuming a span of 64
+// Most commonly adjusted paramaters
+#define dimensions 3				// maximum 4, assuming a span of 64
 #define span 16						// width of lattice along every dimension
-#define coldstart 0					// -1 = coldstart, 0 = hotstart
-#define betamax	0.46				// maximum value of beta
-#define betamin 0.41				// minimum value of beta
+#define Tmin 1.0					// minimum value of beta
+#define Tmax 5.0					// maximum value of beta
 #define samples 200					// # of samples between betamin and betamax
-#define	experiments 10000			// # of separate experiments to compile
-#define runcount 2500				// # of averaging runs at each value of beta
-#define Boltzmann 1.0				// Boltzmann constant (used only for scaling heat capacity)
-#define equlibriate 100000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
+#define	experiments 1				// # of separate experiments to compile
+#define runcount 100000				// # of averaging runs at each value of beta
 #define runsteps 1000				// # of Monte Carlo steps between each averaging run
+
+// Other paramaters and constants
+#define coldstart 0					// -1 = coldstart, 0 = hotstart
+#define equlibriate 100000			// # of Monte Carlo steps given to reach equlibrium at each value of beta
+#define Boltzmann 1.0				// Boltzmann constant (used only for scaling heat capacity)
 
 // Global variables
 double beta;						// Thermodynamic beta  = 1 / T
-double beta_critical;				// Beta at the critical point
 long sample_critical;				// sample number of critical beta
 long modulus;						// number of cells in the lattice
 char lattice[16777216];				// allocation of memory for the lattice, 1 byte per cell
@@ -30,7 +28,7 @@ double energy, energy2, magnetiz;	// statistics, averages per cell
 double energy_list[samples];		// results arrays holding the output at each sample point for a single experiment
 double energy2_list[samples];
 double magnetiz_list[samples];
-double beta_list[samples];
+double Temp_list[samples];
 double heatcapacity_list[samples];
 long critical_histogram[samples];	// histogram of the location of critical beta (sample no.) over many experiments
 
@@ -81,18 +79,18 @@ int main()
 void experiment(void)
 {
 	long i, j, k;
-	double beta_step, h, b, e, e2;
+	double Temp, Tstep, b, h, e, e2;
 	double h_max = 0.0;
 
 	newlattice();								
-	beta_step = (betamax - betamin) / (samples - 1);
-	if (coldstart)								
+	Tstep = (Tmax - Tmin) / (samples - 1);
+	if (!coldstart)								
 	{
-		beta = betamax;
-		beta_step = - beta_step;
+		Temp = Tmax;
+		Tstep = - Tstep;
 	}
 	else
-		beta = betamin;
+		Temp = Tmin;
 
 	// zero the averaging arrays
 	for (i = 0; i < samples; i++)				
@@ -105,8 +103,9 @@ void experiment(void)
 	// iterate over samples, runs, and Monte-Carlo steps
 	for (i = 0; i < samples; i++)
 	{
-		//printf("\tBeta = %f\n",beta);
-		beta_list[i] = beta;
+		//printf("\tTemp = %f\n",Temp);
+		Temp_list[i] = Temp; beta = 1.0 / Temp;
+
 		for (k = 0; k < equlibriate; k++)
 				metropolis();
 		for (j = 0; j < runcount; j++)
@@ -118,13 +117,13 @@ void experiment(void)
 			energy2_list[i] += energy2;
 			magnetiz_list[i] += abs_double(magnetiz);
 		}
-		beta += beta_step;
+		Temp += Tstep;
 	}
 
 	// complete averaging and calculate heat capacities
 	for (i = 0; i < samples; i++)
 	{
-		b = beta_list[i];
+		b = 1.0 / Temp_list[i];
 		e = energy_list[i] / runcount;
 		e2 = energy2_list[i] / runcount;
 
@@ -138,7 +137,6 @@ void experiment(void)
 		if (h > h_max)
 		{
 			h_max = h;
-			beta_critical = b;
 			sample_critical = i;
 		}
 	}
@@ -182,19 +180,26 @@ void fprint_experiment(void)
 	FILE *fp;
 	int i;
 
-	fopen_s(&fp, "metro-experiment.txt","w");
+	fopen_s(&fp, "experiment.txt","w");
 	if (fp != NULL)
 	{
-		fprintf(fp,"Beta\tMagnetization\tHeat capacity\tEnergy\tEnergy^2\n");
-		if (coldstart)
-			for (i = samples-1; i >= 0; i--)
-				fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
-		else
-			for (i = 0; i < samples; i++)
-				fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
+		fprintf(fp,"Temp\tMagnetization\tHeat capacity\tEnergy\n");
+		for (i = 0; i < samples; i++)
+			fprintf(fp,"%f\t%f\t%E\t%f\n", Temp_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i]);
 	fclose(fp);	
 	}
 
+	fopen_s(&fp, "signature.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Dimensions = %d\n",dimensions);
+		fprintf(fp,"Span = %d\n",span);
+		fprintf(fp,"No. steps to equlibriate at each temp = %d\n",equlibriate);
+		fprintf(fp,"No. averages at each temp = %d\n",runcount);
+		fprintf(fp,"No. step between each average = %d\n",runsteps);
+		fprintf(fp,"No. experiments = %d\n",experiments);
+		fclose(fp);	
+	}
 }
 
 // Output the histogram of critical values of Beta
@@ -203,16 +208,12 @@ void fprint_histogram(void)
 	FILE *fp;
 	int i;
 
-	fopen_s(&fp, "metro-criticalbeta.txt","w");
+	fopen_s(&fp, "criticaltemp.txt","w");
 	if (fp != NULL)
 	{
-		fprintf(fp,"Sample\tBeta\tCount\n");
-		if (coldstart)
-			for (i = samples-1; i >= 0; i--)
-				fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
-		else
-			for (i = 0; i < samples; i++)
-				fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
+		fprintf(fp,"Sample\tTemp\tCount\n");
+		for (i = 0; i < samples; i++)
+			fprintf(fp,"%d\t%f\t%d\n", i, Temp_list[i], critical_histogram[i]);
 	fclose(fp);	
 	}
 }
@@ -340,3 +341,6 @@ void render(void)					// Display the lattice
 		printf("\n");
 	}
 }
+
+// Helpful resource
+// http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx

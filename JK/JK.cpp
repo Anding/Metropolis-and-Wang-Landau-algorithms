@@ -20,19 +20,20 @@ public:
     double measure;
     double temp;
 };
-
 std::vector<std::vector<int> > lattice;
 std::vector<measurement> magnetisation;
-double TEMP_MAX = 1;
-double TEMP_MIN = 0.3;
+
+// Most commonly adjusted paramaters
+double TEMP_MAX = 1.0;
+double TEMP_MIN = 5.0;
 double NUM_STEP = 200;
+int EQ_STEP = 1e7;								// runsteps * runcount
+int latticesize = 32;							
+
 double TEMP_STEP = (TEMP_MAX - TEMP_MIN)/NUM_STEP;
 double TEMP = TEMP_MAX;
 double CONST_J = 0.25;
 int currentenergy = 0;
-
-int EQ_STEP = 1e7;								// HERE runsteps * interval
-int latticesize = 64;							// HERE
 
 void initialiselattice(void);
 void populatelattice(void);
@@ -164,7 +165,7 @@ double edgecase(int x, int y){
 void reachequilibrium(double TEMP){
     double mag = 0;
     int x, y;
-    double energy;
+    //double energy;
     int j = 0;
     double nummeasures = 0;
     for (int i = 0; i < EQ_STEP; i++){
@@ -172,7 +173,7 @@ void reachequilibrium(double TEMP){
         y = (int)(rand() % latticesize);
         flip(x,y);
         j++;
-        if( j == 1e3){						// HERE
+        if( j == 1e3){						// HERE		runsteps
             j = 0;
             mag += abs(calcmag());
             nummeasures++;

@@ -1,25 +1,24 @@
 #include <stdio.h>
 #include <math.h>
 
-// Helpful resource
-// http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx
-
-// Preprocessor numeric constants
-#define dimensions 2				// maximum 4, assuming a span of 64
+// Most commonly adjusted paramaters
+#define dimensions 3				// maximum 4, assuming a span of 64
 #define span 16						// width of lattice along every dimension
-#define coldstart 0					// -1 = coldstart, 0 = hotstart
-#define betamax	0.45				// maximum value of beta
-#define betamin 0.41				// minimum value of beta
+#define Tmin 1.0					// minimum value of beta
+#define Tmax 10.0					// maximum value of beta
 #define samples 200					// # of samples between betamin and betamax
-#define	experiments 10000			// # of separate experiments to compile
-#define Boltzmann 1.0				// Boltzmann constant (used only for scaling heat capacity)
-#define runsteps 100000				// number of Monte Carlo steps between each check of the histogram
-#define	referencesteps 1000000		// number of Monte Carlo steps to establish the reference histogram
-#define reference_level 1000		// minimum count in the reference histogram to include an energy level
-#define flatness_criterion 0.80		// criterion for testing the flatness of the histogram
-#define iterationlimit 1000			// criterion for avoiding stuck random walks
+#define	experiments 1				// # of separate experiments to compile
+#define ln_f_limit 0.00001			// limit value of the adjustment factor
+#define	referencesteps 10000000		// number of Monte Carlo steps to establish the reference histogram
+
+// Other paramaters and constants
+#define coldstart -1					// -1 = coldstart, 0 = hotstart
+#define reference_level 100			// minimum count in the reference histogram to include an energy level
 #define ln_f_initial 1.0			// initial value of the adjustment factor
-#define ln_f_final .00001			// final value of the adjustment factor
+#define runsteps 100000				// number of Monte Carlo steps between each check of the histogram
+#define flatness_criterion 0.80		// criterion for testing the flatness of the histogram
+#define iterationlimit 10000		// criterion for avoiding stuck random walks
+#define Boltzmann 1					// Boltzmann constant (used only for scaling heat capacity)
 #define ln_2 0.6931471806			// ln_g[lowest energy configuration] = ln(2), for normalization
 
 // Macro for addressing the density of states array with an energy level
@@ -28,7 +27,7 @@
 	
 // Global variables
 double beta;						// Thermodynamic beta  = 1 / T
-double beta_critical;				// Beta at the critical point
+//double beta_critical;				// Beta at the critical point
 long sample_critical;				// sample number of critical beta
 long modulus;						// number of cells in the lattice
 long energy_levels;					// number of energy levels
@@ -47,7 +46,7 @@ double energy, energy2, magnetiz;	// statistics, averages per cell
 double energy_list[samples];		// results arrays holding the output at each sample point
 double energy2_list[samples];
 double magnetiz_list[samples];
-double beta_list[samples];
+double Temp_list[samples];
 double heatcapacity_list[samples];
 long critical_histogram[samples];	// histogram of the location of critical beta (sample no.) over many experiments
 double	critical_list[experiments];	// list of the critical beta values found at each experiment
@@ -117,8 +116,9 @@ int experiment()
 
 	// setup the reference histogram
 	ln_f = ln_f_initial;
-	for(i = 0; i < referencesteps; i++)																					
-			wanglandau();
+	while (hist[0] <= reference_level)											// ensure that the ground state gets on the list!
+		for(i = 0; i < referencesteps; i++)																					
+				wanglandau();
 
 	for(i=0; i < energy_levels; i++)
 			hist_ref[i] = hist[i] - reference_level;
@@ -132,7 +132,7 @@ int experiment()
 	while (hist_ref[indx(lattice_energy)] < 0);
 
 	// iterate the Wang Landau algorithm
-	for(ln_f = ln_f_initial; ln_f >= ln_f_final; ln_f = ln_f  / 2.0)			// proceeds over successively smaller adjustment factors
+	for(ln_f = ln_f_initial; ln_f >= ln_f_limit; ln_f = ln_f  / 2.0)			// proceeds over successively smaller adjustment factors
 	{
 		zero_hist(); n = 0;														// zero the histogram
 		//printf("ln_f = %f\n",ln_f);
@@ -222,14 +222,17 @@ void num_sums(void)															// perform the numerical sums over the density
 	double l, l_max;
 	double e1, e2, h, h_max, f, t, sum_f;														
 	double sum_e, sum_e2 = 0.0, sum_m = 0.0;
-	double betastep;
+	double Temp, Tstep;
 
 	// prepare for the integration
-	beta = betamin; betastep = (betamax - betamin) / (samples - 1); h_max = 0.0;
+	Tstep = (Tmax - Tmin) / (samples - 1); Temp = Tmin;  h_max = 0.0; 
 	
 	// conduct an integration at each value of beta
 	for (i = 0; i < samples; i++)
 	{
+		// set beta
+		beta = 1.0 / Temp;
+
 		// pre-sum scan to remove largest factor from the exponential to improve accuracy
 		l_max = 0;
 		for (j = 0; j < energy_levels; j++)	
@@ -262,17 +265,16 @@ void num_sums(void)															// perform the numerical sums over the density
 		energy_list[i] = e1;
 		energy2_list[i] =e2;
 		heatcapacity_list[i] = h;
-		beta_list[i] = beta;
+		Temp_list[i] = Temp;
 
 		// screening for the critical point
 		if (h > h_max)
 		{
 			h_max = h;
-			beta_critical = beta;
 			sample_critical = i;
 		}
 
-		beta += betastep;
+		Temp += Tstep;
 	}
 }		
 
@@ -330,9 +332,9 @@ void print_stats(void)			// Output the latest stats
 {
 	long i;
 
-	printf("hist\tlg_g\tmag\n");
+	printf("E\thist\tlg_g\tmag\n");
 	for (i = 0; i < energy_levels; i++)
-		printf("%d\t%f\t%f\n",hist[i],ln_g[i],magnetiz_avg[i]);
+		printf("%d\t%d\t%f\t%f\n",unindx(i), hist[i], ln_g[i], magnetiz_avg[i]);
 	printf("\n");
 }
 
@@ -341,29 +343,33 @@ void fprint_experiment(void)			// Output the results of a simulation run
 	FILE *fp;
 	int i;
 
-	fopen_s(&fp, "wanglandau-experiment.txt","w");
+	fopen_s(&fp, "experiment.txt","w");
 	if (fp != NULL)
 	{
-		fprintf(fp,"Beta\t Magnetization\tHeat capacity\tEnergy\tEnergy^2\n");
+		fprintf(fp,"Temp\tMagnetization\tHeat capacity\tEnergy\n");
 		for (i = 0; i < samples; i++)
-			fprintf(fp,"%f\t%f\t%f\t%f\t%f\n", beta_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i], energy2_list[i]);
-	/*for (i = 0; i < samples; i++)
-		fprintf(fp,"%f\t%f\n", beta_list[i], magnetiz_list[i]);
-	for (i = 0; i < samples; i++)
-		fprintf(fp,"%f\t%f\n", beta_list[i], energy_list[i]);
-	for (i = 0; i < samples; i++)
-		fprintf(fp,"%f\t%E\n", beta_list[i], heatcapacity_list[i]);
-	*/
-	fclose(fp);	
+			fprintf(fp,"%f\t%f\t%E\t%f\n", Temp_list[i], magnetiz_list[i], heatcapacity_list[i], energy_list[i]);
+		fclose(fp);	
 	}
 
-	fopen_s(&fp, "wanglandau-dos.txt","w");
+	fopen_s(&fp, "density.txt","w");
 	if (fp != NULL)
 	{
 		fprintf(fp,"Energy\tln(density of states)\n");
 		for (i = 0; i < energy_levels; i++)
-			fprintf(fp,"%d\t%f\n", 4*i - 2*modulus, ln_g[i]);
-	fclose(fp);	
+			fprintf(fp,"%d\t%f\t%f\n", unindx(i), ln_g[i], magnetiz_avg[i]);
+		fclose(fp);	
+	}
+
+	fopen_s(&fp, "signature.txt","w");
+	if (fp != NULL)
+	{
+		fprintf(fp,"Dimensions = %d\n",dimensions);
+		fprintf(fp,"Span = %d\n",span);
+		fprintf(fp,"Reference histogram steps = %d\n",referencesteps);
+		fprintf(fp,"ln f_limit = %f\n",ln_f_limit);
+		fprintf(fp,"No. experiments = %d\n",experiments);
+		fclose(fp);	
 	}
 
 }
@@ -373,13 +379,13 @@ void fprint_histogram(void)				// Output the histogram of critical values of Bet
 	FILE *fp;
 	int i;
 
-	fopen_s(&fp, "wanglandau-criticalbeta.txt","w");
+	fopen_s(&fp, "criticaltemp.txt","w");
 	if (fp != NULL)
 	{
-		fprintf(fp,"Sample\tBeta\tCount\n");
+		fprintf(fp,"Sample\tTemp\tCount\n");
 		for (i = 0; i < samples; i++)
-			fprintf(fp,"%d\t%f\t%d\n", i, beta_list[i], critical_histogram[i]);
-	fclose(fp);	
+			fprintf(fp,"%d\t%f\t%d\n", i, Temp_list[i], critical_histogram[i]);
+		fclose(fp);	
 	}
 }
 
@@ -528,3 +534,6 @@ void render(void)
 		printf("\n");
 	}
 }
+
+// Helpful C resource
+// http://msdn.microsoft.com/en-us/library/fw5abdx6.aspx

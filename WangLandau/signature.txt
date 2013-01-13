@@ -1,0 +1,5 @@
+Dimensions = 3
+Span = 10
+Reference histogram steps = 10000000
+ln f_limit = 0.001000
+No. experiments = 1
