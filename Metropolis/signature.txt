@@ -1,4 +1,4 @@
-Dimensions = 4
+Dimensions = 3
 Span = 8
 No. steps to equlibriate at each temp = 100000
 No. averages at each temp = 100000
