@@ -17,7 +17,7 @@
 #define ln_f_initial 1.0			// initial value of the adjustment factor
 #define runsteps 100000				// number of Monte Carlo steps between each check of the histogram
 #define flatness_criterion 0.80		// criterion for testing the flatness of the histogram
-#define iterationlimit 10000		// criterion for avoiding stuck random walks
+#define iterationlimit 1000000		// criterion for avoiding stuck random walks
 #define Boltzmann 1					// Boltzmann constant (used only for scaling heat capacity)
 #define ln_2 0.6931471806			// ln_g[lowest energy configuration] = ln(2), for normalization
 
