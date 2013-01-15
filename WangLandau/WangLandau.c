@@ -2,12 +2,12 @@
 #include <math.h>
 
 // Most commonly adjusted paramaters
-#define dimensions 4				// maximum 4, assuming a span of 64
+#define dimensions 2				// maximum 4, assuming a span of 64
 #define span 8						// width of lattice along every dimension
-#define Tmin 1.0					// minimum value of beta
-#define Tmax 10.0					// maximum value of beta
+#define Tmin 2.25					// minimum value of beta
+#define Tmax 2.45					// maximum value of beta
 #define samples 200					// # of samples between betamin and betamax
-#define	experiments 1				// # of separate experiments to compile
+#define	experiments 10000			// # of separate experiments to compile
 #define ln_f_limit 0.00001			// limit value of the adjustment factor
 #define	referencesteps 10000000		// number of Monte Carlo steps to establish the reference histogram
 
@@ -17,7 +17,7 @@
 #define ln_f_initial 1.0			// initial value of the adjustment factor
 #define runsteps 100000				// number of Monte Carlo steps between each check of the histogram
 #define flatness_criterion 0.80		// criterion for testing the flatness of the histogram
-#define iterationlimit 1000000		// criterion for avoiding stuck random walks
+#define iterationlimit 1000			// criterion for avoiding stuck random walks
 #define Boltzmann 1					// Boltzmann constant (used only for scaling heat capacity)
 #define ln_2 0.6931471806			// ln_g[lowest energy configuration] = ln(2), for normalization
 

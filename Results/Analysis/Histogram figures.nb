@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     60327,       1103]
-NotebookOptionsPosition[     59444,       1067]
-NotebookOutlinePosition[     59789,       1082]
-CellTagsIndexPosition[     59746,       1079]
+NotebookDataLength[     60614,       1103]
+NotebookOptionsPosition[     59733,       1067]
+NotebookOutlinePosition[     60076,       1082]
+CellTagsIndexPosition[     60033,       1079]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -38,7 +38,7 @@ Cell[BoxData[
   RowBox[{"\<\"Mean = \"\>", "\[InvisibleSpace]", "2.343306523333334`"}],
   SequenceForm["Mean = ", 2.343306523333334],
   Editable->False]], "Print",
- CellChangeTimes->{3.5670586865454135`*^9}],
+ CellChangeTimes->{3.5670586865454135`*^9, 3.567160435736268*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -46,7 +46,7 @@ Cell[BoxData[
    "1.407892764443721`", "\[InvisibleSpace]", "\<\"%\"\>"}],
   SequenceForm["Coefficient of variation = ", 1.407892764443721, "%"],
   Editable->False]], "Print",
- CellChangeTimes->{3.5670586865464134`*^9}]
+ CellChangeTimes->{3.5670586865454135`*^9, 3.567160435737268*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -352,17 +352,17 @@ zU5+zx6If8RTz4sDM/h/+HStJg==
       "]]}}},
   AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
   Axes->True,
-  AxesLabel->{None, None},
   AxesOrigin->{2.343306523333334, 0},
   Frame->True,
   FrameLabel->{
-    FormBox["\"Beta\"", TraditionalForm], 
+    FormBox["\"T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
   ImageSize->Large,
   LabelStyle->Medium,
-  Method->{},
-  PlotRangeClipping->True]], "Output",
- CellChangeTimes->{3.5670586865484133`*^9}]
+  PlotRange->{All, All},
+  PlotRangeClipping->True,
+  PlotRangePadding->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{3.5670586865484133`*^9, 3.5671604357652693`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -385,7 +385,7 @@ Cell[BoxData[
   RowBox[{"\<\"Mean = \"\>", "\[InvisibleSpace]", "2.3621185787`"}],
   SequenceForm["Mean = ", 2.3621185787],
   Editable->False]], "Print",
- CellChangeTimes->{3.567058721165394*^9}],
+ CellChangeTimes->{3.567058721165394*^9, 3.567160435891277*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -393,7 +393,7 @@ Cell[BoxData[
    "0.3916290235280284`", "\[InvisibleSpace]", "\<\"%\"\>"}],
   SequenceForm["Coefficient of variation = ", 0.3916290235280284, "%"],
   Editable->False]], "Print",
- CellChangeTimes->{3.5670587211663933`*^9}]
+ CellChangeTimes->{3.567058721165394*^9, 3.567160435892277*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -705,17 +705,17 @@ dscs0+NXxLtp2cMdYNWe/5wia18SKu9fqe2A93nZ2B143UakDzspKStD/Bqm
       "]]}}},
   AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
   Axes->True,
-  AxesLabel->{None, None},
   AxesOrigin->{2.3621185787, 0},
   Frame->True,
   FrameLabel->{
-    FormBox["\"Beta\"", TraditionalForm], 
+    FormBox["\"T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
   ImageSize->Large,
   LabelStyle->Medium,
-  Method->{},
-  PlotRangeClipping->True]], "Output",
- CellChangeTimes->{3.5670587211693935`*^9}]
+  PlotRange->{All, All},
+  PlotRangeClipping->True,
+  PlotRangePadding->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{3.5670587211693935`*^9, 3.567160435893277*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -738,7 +738,7 @@ Cell[BoxData[
   RowBox[{"\<\"Mean = \"\>", "\[InvisibleSpace]", "2.343306523333334`"}],
   SequenceForm["Mean = ", 2.343306523333334],
   Editable->False]], "Print",
- CellChangeTimes->{3.567070095743618*^9}],
+ CellChangeTimes->{3.567070095743618*^9, 3.5671604359772816`*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -746,7 +746,7 @@ Cell[BoxData[
    "1.407892764443721`", "\[InvisibleSpace]", "\<\"%\"\>"}],
   SequenceForm["Coefficient of variation = ", 1.407892764443721, "%"],
   Editable->False]], "Print",
- CellChangeTimes->{3.567070095743618*^9}]
+ CellChangeTimes->{3.567070095743618*^9, 3.5671604359772816`*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -1052,22 +1052,22 @@ zU5+zx6If8RTz4sDM/h/+HStJg==
       "]]}}},
   AspectRatio->NCache[GoldenRatio^(-1), 0.6180339887498948],
   Axes->True,
-  AxesLabel->{None, None},
   AxesOrigin->{2.343306523333334, 0},
   Frame->True,
   FrameLabel->{
-    FormBox["\"Beta\"", TraditionalForm], 
+    FormBox["\"T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
   ImageSize->Large,
   LabelStyle->Medium,
-  Method->{},
-  PlotRangeClipping->True]], "Output",
- CellChangeTimes->{3.567070095756619*^9}]
+  PlotRange->{All, All},
+  PlotRangeClipping->True,
+  PlotRangePadding->{Automatic, Automatic}]], "Output",
+ CellChangeTimes->{3.567070095756619*^9, 3.567160435979282*^9}]
 }, Open  ]]
 },
 WindowSize->{707, 867},
 WindowMargins->{{28, Automatic}, {Automatic, 38}},
-FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
 StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
@@ -1084,26 +1084,26 @@ Notebook[{
 Cell[CellGroupData[{
 Cell[579, 22, 420, 9, 112, "Input"],
 Cell[CellGroupData[{
-Cell[1024, 35, 227, 5, 23, "Print"],
-Cell[1254, 42, 310, 6, 23, "Print"]
+Cell[1024, 35, 249, 5, 23, "Print"],
+Cell[1276, 42, 332, 6, 23, "Print"]
 }, Open  ]],
-Cell[1579, 51, 18482, 313, 392, "Output"]
-}, Open  ]],
-Cell[CellGroupData[{
-Cell[20098, 369, 422, 9, 112, "Input"],
-Cell[CellGroupData[{
-Cell[20545, 382, 215, 5, 23, "Print"],
-Cell[20763, 389, 312, 6, 23, "Print"]
-}, Open  ]],
-Cell[21090, 398, 18823, 319, 384, "Output"]
+Cell[1623, 51, 18535, 313, 392, "Output"]
 }, Open  ]],
 Cell[CellGroupData[{
-Cell[39950, 722, 422, 9, 112, "Input"],
+Cell[20195, 369, 422, 9, 112, "Input"],
 Cell[CellGroupData[{
-Cell[40397, 735, 225, 5, 23, "Print"],
-Cell[40625, 742, 308, 6, 23, "Print"]
+Cell[20642, 382, 237, 5, 23, "Print"],
+Cell[20882, 389, 332, 6, 23, "Print"]
 }, Open  ]],
-Cell[40948, 751, 18480, 313, 424, "Output"]
+Cell[21229, 398, 18874, 319, 384, "Output"]
+}, Open  ]],
+Cell[CellGroupData[{
+Cell[40140, 722, 422, 9, 112, "Input"],
+Cell[CellGroupData[{
+Cell[40587, 735, 249, 5, 23, "Print"],
+Cell[40839, 742, 332, 6, 23, "Print"]
+}, Open  ]],
+Cell[41186, 751, 18531, 313, 392, "Output"]
 }, Open  ]]
 }
 ]

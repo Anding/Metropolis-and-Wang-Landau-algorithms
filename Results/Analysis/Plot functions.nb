@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     12565,        298]
+NotebookDataLength[     12572,        299]
 NotebookOptionsPosition[     12203,        283]
-NotebookOutlinePosition[     12624,        299]
-CellTagsIndexPosition[     12581,        296]
+NotebookOutlinePosition[     12631,        300]
+CellTagsIndexPosition[     12588,        297]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -282,10 +282,11 @@ Cell[BoxData[
    3.566987386423031*^9, 3.5669873911583023`*^9}}]
 },
 WindowSize->{846, 845},
-WindowMargins->{{0, Automatic}, {Automatic, 0}},
-PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
-FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
-StyleDefinitions->"Default.nb"
+WindowMargins->{{Automatic, 268}, {Automatic, 22}},
+FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
+StyleDefinitions->"Default.nb",
+PrivateNotebookOptions -> {
+ "VersionedStylesheet" -> {"Default.nb"[8.] -> False}}
 ]
 (* End of Notebook Content *)
 
