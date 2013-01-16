@@ -2,8 +2,8 @@
 #include <math.h>
 
 // Most commonly adjusted paramaters
-#define dimensions 4				// maximum 4, assuming a span of 64
-#define span 8						// width of lattice along every dimension
+#define dimensions 2				// maximum 4, assuming a span of 64
+#define span 16						// width of lattice along every dimension
 #define Tmin 1.0					// minimum value of beta
 #define Tmax 10.0					// maximum value of beta
 #define samples 200					// # of samples between betamin and betamax

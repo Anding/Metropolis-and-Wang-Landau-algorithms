@@ -1,5 +1,5 @@
-Dimensions = 4
-Span = 8
+Dimensions = 2
+Span = 16
 Reference histogram steps = 10000000
 ln f_limit = 0.000010
 No. experiments = 1
