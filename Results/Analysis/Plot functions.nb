@@ -10,10 +10,10 @@
 NotebookFileLineBreakTest
 NotebookFileLineBreakTest
 NotebookDataPosition[       157,          7]
-NotebookDataLength[     12572,        299]
-NotebookOptionsPosition[     12203,        283]
-NotebookOutlinePosition[     12631,        300]
-CellTagsIndexPosition[     12588,        297]
+NotebookDataLength[     12457,        296]
+NotebookOptionsPosition[     12089,        280]
+NotebookOutlinePosition[     12516,        297]
+CellTagsIndexPosition[     12473,        294]
 WindowFrame->Normal*)
 
 (* Beginning of Notebook Content *)
@@ -267,10 +267,6 @@ Cell[BoxData[
         RowBox[{"{", 
          RowBox[{"\"\<T / J\>\"", ","}], " ", "}"}]}], ",", " ", 
        RowBox[{"LabelStyle", " ", "->", " ", "Medium"}], ",", " ", 
-       RowBox[{"PlotLegends", "\[Rule]", 
-        RowBox[{"{", 
-         RowBox[{"\"\<<m>\>\"", ",", "\"\<<C>\>\"", ",", "\"\<<E>\>\""}], 
-         "}"}]}], ",", " ", 
        RowBox[{"Joined", "\[Rule]", " ", "True"}], ",", 
        RowBox[{"PlotStyle", " ", "\[Rule]", 
         RowBox[{"Thickness", "[", ".004", "]"}]}]}], "]"}]}]}], 
@@ -279,14 +275,15 @@ Cell[BoxData[
    3.5669832479963264`*^9, 3.566983324166683*^9}, {3.5669833964228163`*^9, 
    3.56698340803048*^9}, {3.5669834752553253`*^9, 3.5669835855026307`*^9}, {
    3.5669838193520064`*^9, 3.566983907199031*^9}, 3.5669855401594305`*^9, {
-   3.566987386423031*^9, 3.5669873911583023`*^9}}]
+   3.566987386423031*^9, 3.5669873911583023`*^9}, {3.5672196714285755`*^9, 
+   3.5672196719589763`*^9}}]
 },
 WindowSize->{846, 845},
-WindowMargins->{{Automatic, 268}, {Automatic, 22}},
-FrontEndVersion->"8.0 for Microsoft Windows (64-bit) (October 6, 2011)",
-StyleDefinitions->"Default.nb",
+WindowMargins->{{0, Automatic}, {Automatic, 0}},
 PrivateNotebookOptions -> {
- "VersionedStylesheet" -> {"Default.nb"[8.] -> False}}
+ "VersionedStylesheet" -> {"Default.nb"[8.] -> False}},
+FrontEndVersion->"7.0 for Microsoft Windows (64-bit) (November 10, 2008)",
+StyleDefinitions->"Default.nb"
 ]
 (* End of Notebook Content *)
 
@@ -300,7 +297,7 @@ CellTagsIndex->{}
 (*NotebookFileOutline
 Notebook[{
 Cell[557, 20, 7967, 170, 492, "Input"],
-Cell[8527, 192, 3672, 89, 212, "Input"]
+Cell[8527, 192, 3558, 86, 192, "Input"]
 }
 ]
 *)
