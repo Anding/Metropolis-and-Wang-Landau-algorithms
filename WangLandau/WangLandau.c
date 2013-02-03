@@ -3,11 +3,11 @@
 
 // Most commonly adjusted paramaters
 #define dimensions 2				// maximum 4, assuming a span of 64
-#define span 24						// width of lattice along every dimension
-#define Tmin 2.15					// minimum value of beta
-#define Tmax 2.45					// maximum value of beta
+#define span 32						// width of lattice along every dimension
+#define Tmin 2.0					// minimum value of beta
+#define Tmax 2.5					// maximum value of beta
 #define samples 200					// # of samples between betamin and betamax
-#define	experiments 10000			// # of separate experiments to compile
+#define	experiments 1				// # of separate experiments to compile
 #define ln_f_limit 0.0001			// limit value of the adjustment factor
 #define	referencesteps 10000000		// number of Monte Carlo steps to establish the reference histogram
 
@@ -17,7 +17,7 @@
 #define ln_f_initial 1.0			// initial value of the adjustment factor
 #define runsteps 100000				// number of Monte Carlo steps between each check of the histogram
 #define flatness_criterion 0.80		// criterion for testing the flatness of the histogram
-#define iterationlimit 1000		// criterion for avoiding stuck random walks
+#define iterationlimit 100000		// criterion for avoiding stuck random walks
 #define Boltzmann 1					// Boltzmann constant (used only for scaling heat capacity)
 #define ln_2 0.6931471806			// ln_g[lowest energy configuration] = ln(2), for normalization
 
@@ -119,8 +119,13 @@ int experiment()
 	for(i = 0; i < referencesteps; i++)																					
 				wanglandau();
 
-	if (hist[0] <= reference_level)											// ensure that the ground state gets on the list!
-			return 0;
+	if (hist[0] < reference_level)											// ensure that the ground state gets on the list!
+	{
+		printf("Failed to populate ground state\n");
+		return 0;
+	}
+
+			
 
 	for(i=0; i < energy_levels; i++)
 			hist_ref[i] = hist[i] - reference_level;
@@ -129,11 +134,18 @@ int experiment()
 	zero_dos(); n= 0;
 	do {
 		if (++n > iterationlimit)
+		{
+			printf("Failed to initilize to an allowed configuration\n");
 			return 0;
+		}
 		newlattice();
 		stats();
 	}
 	while (hist_ref[indx(lattice_energy)] < 0);
+	
+		newlattice();
+		stats();
+
 
 	// iterate the Wang Landau algorithm
 	for(ln_f = ln_f_initial; ln_f >= ln_f_limit; ln_f = ln_f  / 2.0)			// proceeds over successively smaller adjustment factors
@@ -142,7 +154,10 @@ int experiment()
 		//printf("ln_f = %f\n",ln_f);
 		do {
 			if (++n > iterationlimit)
+			{
+				printf("Exceeded iteration limit\n");
 				return 0;
+			}
 			for(i = 0; i < runsteps; i++)										// iterate the Wang Landau algorithm	
 				wanglandau();
 		} while( ! flat());														// check flatness of the histogram

@@ -3,12 +3,12 @@
 
 // Most commonly adjusted paramaters
 #define dimensions 2				// maximum 4, assuming a span of 64
-#define span 64						// width of lattice along every dimension
-#define Tmin 2.05					// minimum value of beta
-#define Tmax 2.45					// maximum value of beta
-#define samples 100					// # of samples between betamin and betamax
-#define	experiments 10000			// # of separate experiments to compile
-#define runcount 1000				// # of averaging runs at each value of beta
+#define span 128					// width of lattice along every dimension
+#define Tmin 2.0					// minimum value of beta
+#define Tmax 2.5					// maximum value of beta
+#define samples 200					// # of samples between betamin and betamax
+#define	experiments 1				// # of separate experiments to compile
+#define runcount 1000000			// # of averaging runs at each value of beta
 #define runsteps 1000				// # of Monte Carlo steps between each averaging run
 
 // Other paramaters and constants
