@@ -1,6 +1,6 @@
 Dimensions = 2
-Span = 128
+Span = 32
 No. steps to equlibriate at each temp = 100000
-No. averages at each temp = 1000000
+No. averages at each temp = 100000
 No. step between each average = 1000
 No. experiments = 1

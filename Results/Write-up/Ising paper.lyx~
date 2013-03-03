@@ -78,7 +78,23 @@ February 2013
 \end_layout
 
 \begin_layout Abstract
-TBD
+This Metropolis and Wang Landau algorithms represent two different approaches
+ to solving statistical problems using Monte Carlo methods.
+ The Metropolis algorithm directly models random fluctuations in the system,
+ while the Wang Landau algorithm uses a random walk to determine the density
+ of states as a function of system energy and therefore the partition function.
+ This project compared these two different approaches in evaluationg the
+ Ising model in 2, 3 and 4 dimensions.
+ It was found that for large lattices both algorithms produce accurate estimatio
+ns of the analytical solution, but for small lattices the two algorithms
+ produce different solutions.
+ In addition each approach has strengths and weaknesses in different application
+s.
+ For modest size lattices the basic Wang Landau algorithm produced high
+ quality results very efficiently, but scaling this algorithm to larger
+ lattices requires a more sophisticed implementation.
+ The Metropolis algorithm is less efficient overall, but the same implementation
+ copes equally well with large lattices given sufficient computation time.
 \end_layout
 
 \begin_layout Section
@@ -86,60 +102,177 @@ Introduction
 \end_layout
 
 \begin_layout Standard
-The Ising model is a system in statistical physics exhibiting a phase transition
- that can be investigated with computational algorithms.
- A simple instance of the Ising model might be a two dimensional lattice
- of atoms, each of which can be in one of two possible states.
- There is an interaction energy between every atom and each of its nearest
- neighbours expressed by the following Hamiltonian 
-\begin_inset Formula 
-\[
-H=-J\,\sum_{\left\langle i,,j\right\rangle }S_{i}S_{j}-\sum_{i}h.S_{i}
-\]
+The Ising model is a very simplifed model of intramolecular forces.
+ In spite of the simplicity of the model, it has been found to contain the
+ essential characteristics of cooperative phenomena such as phase transitions.
+ It can be applied to a wide range of physical systems such as gas-liquid
+ critical phenomena, magnetic Curie points, order-disorder transitions in
+ alloys, and phase separation in liquid mixtures
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Binney"
 
 \end_inset
 
-where 
-\begin_inset Formula $S_{i}=\pm1$
-\end_inset
-
- is the state of the atom at site 
-\begin_inset Formula $i$
-\end_inset
-
- , 
-\begin_inset Formula $\sum_{ij}$
-\end_inset
-
-indicates the sum over the four nearest neighbours, 
-\begin_inset Formula $J$
-\end_inset
-
- is a constant with units of energy, and 
-\begin_inset Formula $h$
-\end_inset
-
- is the contribution of an external field.
- The Ising model may describe a ferromagnetic system, in which case 
-\begin_inset Formula $S_{i}$
-\end_inset
-
- is the magnetization of atom 
-\begin_inset Formula $i$
-\end_inset
-
- , 
-\begin_inset Formula $J\,>\,0$
-\end_inset
-
- , and consequently neighbouring spins are at a lower energy when aligned.
- If the lattice is allowed to equilibrate at some temperature then the total
- interaction energy and magnetization will, on average, reach steady values.
+.
+ In outline, the model assumes that the physical system can be represented
+ by a regular lattice of nodes, and that each node exists in one of two
+ possible configurations (Fig.
  
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Ising"
+
+\end_inset
+
+).
+ Interaction energies between neighbouring nodes depend on their alignment.
+ The nodes could be domains in a ferromagnet oriented 
+\begin_inset Quotes eld
+\end_inset
+
+up
+\begin_inset Quotes erd
+\end_inset
+
+ or 
+\begin_inset Quotes eld
+\end_inset
+
+down
+\begin_inset Quotes erd
+\end_inset
+
+, mixtures of molecules, or mixtures of molecules and empty spaces.
+ The Ising model was first investigated by Wilhelm Lenz and Ernst Ising
+ in 1925 at Hamburg University and has been applied to a wide variety of
+ problems since the 1960's 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Brush,Binney"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
-The Ising model may be investigated using computational algorithms.
+\begin_inset Float figure
+placement H
+wide false
+sideways false
+status open
+
+\begin_layout LyX-Code
+\align center
+- - + + + - - - - + + + - - - +
+\end_layout
+
+\begin_layout LyX-Code
+\align center
++ - + - - - + + + + - - - - + +
+\end_layout
+
+\begin_layout LyX-Code
+\align center
++ - + - + - - + - - + + + - + -
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- - + - - - - - - + + + + + - +
+\end_layout
+
+\begin_layout LyX-Code
+\align center
++ - + - - - - + - + + + + + - -
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- - + - + + - - - - - + + - - -
+\end_layout
+
+\begin_layout LyX-Code
+\align center
++ + + + - + + - - + - + - + + +
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- + + + - - - - + - + + + - - +
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- + + + + - + + + - + + + - - -
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- + + - + - + - + + - + - - - -
+\end_layout
+
+\begin_layout LyX-Code
+\align center
++ - - + - + - - + - + + + - + +
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- + - + + + + - + - - - - - - +
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- - - - - + + - + - + - + - - -
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- - + - - + - - + - + + + - + -
+\end_layout
+
+\begin_layout LyX-Code
+\align center
++ + - - + + + + - + + - + - + +
+\end_layout
+
+\begin_layout LyX-Code
+\align center
+- + - - + - - - - + - - + - + -
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Ising"
+
+\end_inset
+
+Rendering of a 16 x 16 node Ising model lattice at high temperature
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The Ising model is ideally suited to investigation using computational algorithm
+s.
  An early technique was the Metropolis algorithm
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -150,13 +283,21 @@ key "Metropolis"
 , which directly simulates fluctuations in the lattice using a Monte-Carlo
  process.
  In successive steps, atoms in the lattice are selected at random and their
- spins can be flipped according to certain rules that take into account
- the potential change in lattice energy and the temperature.
+ spins are flipped according to certain rules that take into account the
+ potential change in lattice energy and the temperature.
  By operating the algorithm with suitable averaging over a range of temperatures
 , the characteristics of the Ising model can be measured.
  In addition, the Metropolis algorithm allows the lattice and its fluctuations
  to be visualized either as snapshots at certain temperatures or as a continuing
- animation.
+ animation, Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:Ising"
+
+\end_inset
+
+].
 \end_layout
 
 \begin_layout Standard
@@ -192,7 +333,7 @@ key "Zhou"
 \end_inset
 
  gave a proof of the convergence of the Wang Landau algorithm and suggested
- a optimization strategy.
+ an optimization strategy.
  Schutz and Landau
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -238,11 +379,67 @@ This project aims to evaluate the Ising model for different lattices using
 \end_layout
 
 \begin_layout Section
-Theory
+Theory of the Ising Model
 \end_layout
 
 \begin_layout Subsection
-The Ising model phase transition
+Description of the Ising model
+\end_layout
+
+\begin_layout Standard
+A simple instance of the Ising model might be a two dimensional lattice
+ of atoms, each of which can be in one of two possible states.
+ There is an interaction energy between every atom and each of its nearest
+ neighbours expressed by the following Hamiltonian 
+\begin_inset Formula 
+\[
+H=-J\,\sum_{\left\langle i,,j\right\rangle }S_{i}S_{j}-\sum_{i}h.S_{i}
+\]
+
+\end_inset
+
+where 
+\begin_inset Formula $S_{i}=\pm1$
+\end_inset
+
+ is the state of the atom at site 
+\begin_inset Formula $i$
+\end_inset
+
+ , 
+\begin_inset Formula $\sum_{\left\langle i,j\right\rangle }$
+\end_inset
+
+indicates the sum over the four nearest neighbours, 
+\begin_inset Formula $J$
+\end_inset
+
+ is a constant with units of energy, and 
+\begin_inset Formula $h$
+\end_inset
+
+ is the contribution of an external field.
+ The Ising model may describe a ferromagnetic system, in which case 
+\begin_inset Formula $S_{i}$
+\end_inset
+
+ is the magnetization of atom 
+\begin_inset Formula $i$
+\end_inset
+
+ , 
+\begin_inset Formula $J\,>\,0$
+\end_inset
+
+ , and consequently neighbouring spins are at a lower energy when aligned.
+ If the lattice is allowed to equilibrate at some temperature then the total
+ interaction energy and magnetization will, subject to thermal fluctuations,
+ reach steady values on average.
+ 
+\end_layout
+
+\begin_layout Subsection
+Analytical solution of the phase transition
 \end_layout
 
 \begin_layout Standard
@@ -258,11 +455,33 @@ res the atomic spins in a lattice are generally all aligned, resulting in
  The sharp boundary indicates that a phase transition has occurred.
  The temperature at which the phase transition occurs is known as the critical
  temperature.
+ 
+\end_layout
+
+\begin_layout Standard
+The Ising model in one dimension can be solved by expressing the Hamiltonian
+ using a matrix, the 
+\shape italic
+transfer matrix
+\shape default
+, to sum the contributions between each pair of atoms in the array.
+ The partition function is found to be the trace of the transfer matrix
+ and is computed by determining the eigenvalues
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Tuckerman"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
 The Ising model in two dimensions was analytically solved by Lars Onsanger
- in 1944 who showed that for an infinite lattice the phase transition occurs
+ in 1944.
+ The solution follows the same principal as the solution for the one dimensional
+ case, but is highly complex mathematically.
+ Onsanger showed that for an infinite lattice the phase transition occurs
  at a temperature given by
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -282,7 +501,7 @@ k_{B}T/J\,=\,2/\ln(1+\sqrt{2})\,=2.269185...
 \end_layout
 
 \begin_layout Subsection
-The Ising model critical exponents
+Critical exponents
 \end_layout
 
 \begin_layout Standard
@@ -310,7 +529,7 @@ f(t)\,=\, a*t^{\lambda}
 \begin_layout Standard
 \begin_inset Formula 
 \[
-\lambda\,=\, lim_{t\rightarrow0}\frac{ln\, f(t)}{ln\, t}
+\lambda\,=\,\lim{}_{t\rightarrow0}\frac{\ln\, f(t)}{\ln\, t}
 \]
 
 \end_inset
@@ -335,9 +554,9 @@ where
 \begin_inset Formula $\lambda$
 \end_inset
 
- is one or or other of the critical exponents.
+ is one or other critical exponent.
  For the two dimensional Ising model, the first two critical exponents and
- their theoretically determined values are as shown in table 
+ their analytically determined values are as shown in Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:critical-exp"
@@ -345,15 +564,14 @@ reference "tab:critical-exp"
 \end_inset
 
 :
+\end_layout
+
+\begin_layout Standard
 \begin_inset Float table
 placement H
 wide false
 sideways false
 status open
-
-\begin_layout Plain Layout
-
-\end_layout
 
 \begin_layout Plain Layout
 \align center
@@ -394,7 +612,7 @@ Critical exponent,
 \begin_inset Text
 
 \begin_layout Plain Layout
-Theoretical value
+Analytic value
 \end_layout
 
 \end_inset
@@ -513,28 +731,28 @@ First two critical exponents of the the two dimensional Ising Model
 These power laws and their critical exponents are important because they
  are believed to represent properties that apply across a wide range of
  systems exhibiting continuous phase transitions, and are independent of
- the most of the individual system details.
+ most of the individual system details.
+ Thus different physical systems may have identical physical exponents,
+ a phenomenon known as universality
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Binney"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Subsection
-Solving the Ising model
+Computational solutions
 \end_layout
 
 \begin_layout Standard
 Although Onsanger's solution for critical temperature and critical exponents
  of the two dimensional Ising model is available, it may still be more straightf
-orward to approach the problem of solving the Ising model by using a computer
- to generate numerical solutions rather than by following the theoretical
- approach.
- For the Ising model in three dimensions or more, only numerical solution
- are available.
+orward to approach the problem using numerical techniques.
+ In addition the Ising model in three dimensions or more can only be solved
+ numerically.
  
 \end_layout
 
@@ -562,9 +780,8 @@ reference "tab:partition function"
 \end_inset
 
 ).
- Instead, the Metropolis and Wang Landau algorithms take a random walk through
- the space of alternative lattice configurations (the state space) and make
- measurements on a sample basis.
+ Instead, the Metropolis and Wang Landau algorithms use a random process
+ to make measurements on a sample basis.
  Accurate determinations for the characteristics of the Ising model can
  be had once sufficient measurements have been accumulated.
  This general approach is called a Monte-Carlo method.
@@ -574,8 +791,6 @@ reference "tab:partition function"
 The key quantities that the algorithms should determine across the range
  of temperatures under investigation include the average magnetization,
  the average interaction energy, and the average heat capacity per atom.
- Magnetization and interaction energy can be measured directly from the
- lattice.
  The heat capacity is related to the energy, 
 \begin_inset Formula $E$
 \end_inset
@@ -646,7 +861,7 @@ Select one candidate spin in the lattice at random and calculate the energy
 \begin_layout Enumerate
 Apply the following rules to determine whether to flip the candidate spin.
  If 
-\begin_inset Formula $\triangle E\,<\,0$
+\begin_inset Formula $\triangle E\,\leq\,0$
 \end_inset
 
  , then flip.
@@ -741,7 +956,7 @@ In the first case the partition function is computed over each available
 
 \end_inset
 
-which is a much smaller quantity than the total number of states (table
+which is a much smaller quantity than the total number of states (Table
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -754,6 +969,7 @@ reference "tab:partition function"
 
 \begin_layout Standard
 \begin_inset Float table
+placement H
 wide false
 sideways false
 status open
@@ -1100,13 +1316,13 @@ Total number of available energy levels for different Ising lattices
 
 \begin_layout Standard
 The Wang Landau algorithm determines the density of states through a random
- walk process.
+ walk process that is directed through state space.
  At each step the probability of moving from the current configuration to
  a new candidate configuration is 
 \shape italic
 inversely proportional
 \shape default
- to the relative density of states of their lattice enrgies.
+ to the relative density of states of their lattice energies.
  A histogram is calculated to track the number of visits to states at each
  energy level.
  When the histogram become flat it indicates that the density of states
@@ -1254,17 +1470,13 @@ Computational implementation
 \end_layout
 
 \begin_layout Standard
-The algorithms were implemented in ANSI C, compiled with Microsoft Visual
- Studio 2012 under Windows 7, and run on a desktop PC with an Intel i7 processor.
+The algorithms were implemented in ANSI C and run on a desktop PC with an
+ Intel i7 processor.
  Functions for lattice manipulation, such as initialization, flipping a
- spin, or taking measurements are identically implemented between both the
- Metropolis and Wang Landau algorithms.
- Data analysis and chart preparation was done with Wolfram Mathematica,
- version 9.
- ASCII text files were used to transfer the experimental data from the C
- algorithms into Mathematica.
- SmartGit was used for version control.
- The source code and results are available as open source files on GitHub
+ spin, or taking measurements were identically implemented between both
+ the Metropolis and Wang Landau algorithms.
+ Data analysis and chart preparation was done with Wolfram Mathematica.
+ The source code and results are available as open source files
 \begin_inset CommandInset citation
 LatexCommand cite
 key "github"
@@ -1280,7 +1492,7 @@ Some implementation specifics are as follows:
 
 \begin_layout Itemize
 Lattices of all sizes and dimensions were structured in memory as a one
- dimensional array with circular boundary conditions.
+ dimensional array with periodic boundary conditions.
  Using this data structure, the nearest neighbours to a particular cell
  at memory address, 
 \begin_inset Formula $A$
@@ -1312,9 +1524,9 @@ Lattices of all sizes and dimensions were structured in memory as a one
 \end_inset
 
 .
- In each case a modulus function also is used to ensure that the reference
- is brought back within range of the array if necessary, thus representing
- the circular boundary conditions.
+ In each case a modulus function is used to ensure that the reference is
+ always within range of the array, thus representing the periodic boundary
+ conditions.
 \end_layout
 
 \begin_layout Itemize
@@ -1352,8 +1564,15 @@ key "RobinLandau"
 \end_layout
 
 \begin_layout Itemize
-To avoid uncertainty with library routines, a random number generator was
- implemented directly based on a method suggested by Knuth, as follows
+To avoid the uncertain effectiveness of library random number routines
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Knuth"
+
+\end_inset
+
+, a random number generator was implemented directly based on a method suggested
+ by Knuth, as follows
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Knuth"
@@ -1371,33 +1590,6 @@ X_{n+1}\,\leftarrow\,(3141592621*X_{n})\, mod\,2^{64}
 
 \end_layout
 
-\begin_layout Itemize
-With each run of a program, in addition to the text files with the experimental
- results, a 
-\begin_inset Quotes eld
-\end_inset
-
-signature
-\begin_inset Quotes erd
-\end_inset
-
- text file was created that recorded all of the key settings and input parameter
-s for that run.
- Separate folders for each experiment held the relevant signature and results
- files.
- Using signature files assisted greatly with documentation and clarity,
- and also enabled the version control software to track revised experimental
- runs, thus allowing 
-\begin_inset Quotes eld
-\end_inset
-
-look back
-\begin_inset Quotes erd
-\end_inset
-
- at earlier runs as and when helpful for development or debugging.
-\end_layout
-
 \begin_layout Section
 Results
 \end_layout
@@ -1410,7 +1602,8 @@ State variables as a function of temperature
 Lattices of 2, 3 and 4 dimensions with sizes 32 x 32, 8 x 8 x 8, and 8 x
  8 x 8 x 8, were evaluated by both the Metropolis and Wang Langdau algorithms.
  Charts were generated for average magnetization, energy and heat capacity
- per site for each lattice size and algorithm (figures 
+ per site for each lattice size and algorithm (Figs.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:mag-m"
@@ -1429,7 +1622,7 @@ reference "fig:heatcap-wl"
  For all of the lattices, the average magnetization per size is equal to
  unity at low temperatures but tends to zero at high temperatures after
  a phase transition.
- The phase transitions occurs at higher temperatures but is less pronounced
+ The phase transition occurs at higher temperatures but is less pronounced
  with the higher dimensional lattices.
  The average energy per site at low temperatures tends to a limit that scales
  linearly with the number of dimensions, while at high temperatures all
@@ -1450,7 +1643,7 @@ The critical temperature can be estimated by measuring the temperature at
  with both the Wang Landau and Metropolis algorithms, and further lattices
  with sizes 32 x 32 and 64 x 64 were evaluated with the Metropolis algorithm.
  In each evaluation 10,000 measurements were made of the critical temperature.
- These measurements were averaged and a Gaussian distribution fitted (figures
+ These measurements were averaged and a Gaussian distribution fitted (Figs.
  
 \begin_inset CommandInset ref
 LatexCommand ref
@@ -1478,16 +1671,16 @@ reference "hist64x64-m"
 \end_layout
 
 \begin_layout Standard
-The theoretical value of the critical temperature for an infinite two dimensiona
-l lattice is given by the Onsanger solution and is, to 4 significant figures,
- 
+The analytically determined value of the critical temperature for an infinite
+ two dimensional lattice is given by the Onsanger solution and is, to 4
+ significant figures, 
 \begin_inset Formula $k_{B}T/J\,=2.269$
 \end_inset
 
  .
  The results of the Metropolis and Wang Landau algorithms are notably different
  from this value and from each other for smaller lattices but very close
- for larger lattices, as summarized in table 
+ for larger lattices, as summarized in Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:critical-temp"
@@ -1497,53 +1690,9 @@ reference "tab:critical-temp"
 .
 \end_layout
 
-\begin_layout Subsection
-Critical exponents
-\end_layout
-
-\begin_layout Standard
-The fit of the theoretically expected behaviour of the average magnetization
- of the lattice near the critical point given by the critical power law
- with the computed results was examined by superimposing the theoretical
- and computed results in a chart.
- Figures 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:critexp-m32x32"
-
-\end_inset
-
- and 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:critexp-wl32x32"
-
-\end_inset
-
- show the results for a 32 x 32 lattice evaluated with both the Metropolis
- and Wang Landau algorithms.
- In each case the approximate behaviour of the phase transition can be seen,
- but the fit to the critical power law is not particularly good.
- This is because of the effect of the relatively small lattice in broadening
- the phase transition.
- In figure 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "fig:critexp-m128x128"
-
-\end_inset
-
-, a 128 x 128 lattice has been evaluated with the Metropolis algorithm and
- the theoretically expected power law chart of average magnetization has
- been superimposed.
- Although the experimental chart itself is much rougher due to constraints
- on the allotted computational time, the fit with the theoretical chart
- is much better because the larger lattice permits a more pronounced phase
- transition to occur.
-\end_layout
-
 \begin_layout Standard
 \begin_inset Float table
+placement H
 wide false
 sideways false
 status collapsed
@@ -1597,7 +1746,7 @@ Wang Landau
 \begin_layout Plain Layout
 
 \series bold
-Theoretical
+Analytical
 \end_layout
 
 \end_inset
@@ -1887,7 +2036,61 @@ The measured and theoretical values of the critical temperature express
 \end_inset
 
 
-\begin_inset Newpage pagebreak
+\begin_inset Newpage newpage
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Critical exponents
+\end_layout
+
+\begin_layout Standard
+The fit of the theoretically expected behaviour of the average magnetization
+ of the lattice near the critical point given by the critical power law
+ with the computed results was examined by superimposing the theoretical
+ and computed results in a chart.
+ Figs.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:critexp-m32x32"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:critexp-wl32x32"
+
+\end_inset
+
+ show the results for a 32 x 32 lattice evaluated with both the Metropolis
+ and Wang Landau algorithms.
+ In each case the approximate behaviour of the phase transition can be seen,
+ but the fit to the critical power law is not particularly good.
+ This is because of the effect of the relatively small lattice in broadening
+ the phase transition.
+ In Fig.
+ 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "fig:critexp-m128x128"
+
+\end_inset
+
+, a 128 x 128 lattice has been evaluated with the Metropolis algorithm and
+ the theoretically expected power law chart of average magnetization has
+ been superimposed.
+ Although the experimental chart itself is much rougher due to constraints
+ on the allotted computational time, the fit with the theoretical chart
+ is much better because the larger lattice permits a more pronounced phase
+ transition to occur.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage newpage
 \end_inset
 
 
@@ -1898,12 +2101,11 @@ The measured and theoretical values of the critical temperature express
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename figures/magnetization-metropolis.png
-	scale 75
+	filename figures/magnetization-metropolis.eps
 
 \end_inset
 
@@ -1936,12 +2138,11 @@ Lattice magnetization per site as a function of temperature generated for
 placement H
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename figures/magnetization-wanglandau.png
-	scale 75
 
 \end_inset
 
@@ -2507,6 +2708,7 @@ Histogram of 10,000 critical temperature measurements for a 64 x 64 lattice
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status collapsed
@@ -2554,6 +2756,7 @@ Fit of the average magnetization predicted using the critical theoretical
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status collapsed
@@ -2597,6 +2800,7 @@ Fit of the average magnetization predicted using the critical theoretical
 
 \begin_layout Standard
 \begin_inset Float figure
+placement H
 wide false
 sideways false
 status collapsed
@@ -2649,7 +2853,8 @@ Success of the algorithms in computing the Ising model
 \begin_layout Standard
 The charts of the calculated Ising model state variables (magnetization,
  energy, and heat capacity) as a function of temperature are consistent
- between the two algorithms (figures 
+ between the two algorithms (Figs.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:mag-m"
@@ -2672,7 +2877,8 @@ key "Blundell"
 
 .
  The expected Ising model phase transitions are visible in all of the 2,
- 3, and 4 dimensional cases (figures 
+ 3, and 4 dimensional cases (Figs.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:mag-m"
@@ -2740,7 +2946,8 @@ tly increase with the higher dimensional cases), whilst a 32 x 32 lattice
 \end_layout
 
 \begin_layout Standard
-The measurement of heat capacity in four dimensions (figures 
+The measurement of heat capacity in four dimensions (Figs.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "fig:heatcap-m"
@@ -2767,7 +2974,8 @@ Critical temperature dependence on lattice size
 
 \begin_layout Standard
 The estimation of the critical temperature for two dimensional lattices
- of different sizes (figures 
+ of different sizes (Figs.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "hist8x8-m"
@@ -2781,7 +2989,7 @@ reference "hist64x64-m"
 
 \end_inset
 
- and table 
+ and Table 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "tab:critical-temp"
@@ -2790,7 +2998,8 @@ reference "tab:critical-temp"
 
 ) demonstrates that the critical temperature for small lattices is notably
  different from the theoretical value for an infinite lattice.
- This can clearly be seen with, for example, figures 
+ This can clearly be seen with, for example, Figs.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "hist8x8-m"
@@ -2809,7 +3018,8 @@ reference "hist8x8-wl"
 \end_inset
 
  with the results histograms and fitted Gaussians for the 8 x 8 lattice.
- For larger lattices (figures 
+ For larger lattices (Figs.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "hist32x32-m"
@@ -2895,7 +3105,8 @@ A further observation that may be significant is whilst that the fit of
  the Gaussian distribution to the results histograms looks acceptable for
  both algorithms, for the Metropolis algorithm there does appear to be some
  asymmetry of results about the mean.
- This is most easily seen with the 16 x 16 lattice results (figure 
+ This is most easily seen with the 16 x 16 lattice results (Fig.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "hist16x16-m"
@@ -2921,7 +3132,8 @@ Computational efficiency
 \end_layout
 
 \begin_layout Standard
-Figures 
+Figs.
+ 
 \begin_inset CommandInset ref
 LatexCommand ref
 reference "hist8x8-m"
@@ -2935,19 +3147,21 @@ reference "hist64x64-m"
 
 \end_inset
 
- also illustrate a smaller coefficient of variation with the Wang Landau
- algorithm, but this is not a like-for-like comparison because no attempt
- was made to tune the running parameters of the two algorithms for similar
- accuracy or matched computation time.
+ illustrate a smaller coefficient of variation with the Wang Landau algorithm
+ as to the Metropolis algorithm.
+ However this is not a like-for-like comparison because no attempt was made
+ to tune the running parameters of the two algorithms for similar accuracy
+ or matched computation time.
  Broadly, the running parameters were set so that each run of 10,000 trials
  would complete within 24 - 36 hours on a desktop PC with Intel i7 processor.
 \end_layout
 
 \begin_layout Standard
 It was beyond the scope of the project to attempt a direct quantitative
- comparison of the efficiency of the two algorithms, but anecdotally it
- was clearly observed that the Wang Landau algorithm produced accurate results
- more quickly for small lattices.
+ comparison of the efficiency of the two algorithms, but it was noted that
+ the Wang Landau algorithm produced accurate results more quickly for small
+ lattices (i.e.
+ 16x16 or less).
  However as noted above, a more sophisticated implementation of the Wang
  Landau algorithm would have been required to investigate larger lattices.
 \end_layout
@@ -2976,7 +3190,7 @@ The two dimensional, infinite Ising model has been solved theoretically
  and both the Metropolis and Wang Landau algorithms give results that correspond
  well with the theoretically expected values, especially for larger experimental
  lattices.
- For smaller lattices, there are notable differences between the the theoretical
+ For smaller lattices, there are notable differences between the theoretical
  results and the results of the two algorithms.
  
 \end_layout
@@ -2984,9 +3198,10 @@ The two dimensional, infinite Ising model has been solved theoretically
 \begin_layout Standard
 Computationally, both algorithms are relatively straightforward to implement.
  Whilst a direct quantitative comparison of computational efficiency was
- not made, anecdotally the Wang Landau algorithm produces faster and higher
- quality results for small lattices but a more sophisticated implementation
- would be required to deal adequately with larger lattices.
+ not made, it was noted that the Wang Landau algorithm produces faster and
+ higher quality results for lattices of size 16x16 or smaller, but a more
+ sophisticated implementation would be required to deal adequately with
+ larger lattices.
  The Metropolis algorithm, on the other hand, is somewhat slower and produces
  rougher results, but the basic implementation is good for both small or
  large lattices, with the latter only requiring a increase in the allotted
@@ -3177,7 +3392,30 @@ Binney, J.
  J., Fisher, A.
  J., and Newman, M.
  E.
- J (1992) The Theory of Critical Phenomena, Oxford University Press.
+ J (1992) The Theory of Critical Phenomena, Oxford University Press
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "12"
+key "Tuckerman"
+
+\end_inset
+
+Mark Tuckerman, http://www.nyu.edu/classes/tuckerman/stat.mech/lectures/lecture_26/
+node2.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+label "13"
+key "Brush"
+
+\end_inset
+
+Stephen Brush, Reviews of Modern Physics, volume 39, number 4, (1967)
 \end_layout
 
 \end_body
