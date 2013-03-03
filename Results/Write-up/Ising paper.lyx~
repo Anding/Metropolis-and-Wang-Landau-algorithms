@@ -2105,7 +2105,8 @@ status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
-	filename figures/magnetization-metropolis.eps
+	filename figures/magnetization-metropolis.png
+	scale 75
 
 \end_inset
 
@@ -2143,6 +2144,7 @@ status open
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename figures/magnetization-wanglandau.png
+	scale 75
 
 \end_inset
 

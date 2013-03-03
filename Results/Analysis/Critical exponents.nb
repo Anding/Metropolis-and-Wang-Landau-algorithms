@@ -43,13 +43,20 @@ CriticalExponents\\\\Metropolis\\\\128x128\\\\experiment.txt\>\"", ",",
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
- RowBox[{
+Cell[BoxData[{
+ RowBox[{"h1", "=", 
   RowBox[{"criticalPlot", "[", 
-   RowBox[{"M32x32", ",", "1.21"}], "]"}], "\[IndentingNewLine]"}]], "Input",
+   RowBox[{"M32x32", ",", "1.21"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critexp32-metropolis.eps\>\"", ",", " ", "h1"}], "]"}], 
+  ";"}], "\[IndentingNewLine]"}], "Input",
  CellChangeTimes->{{3.5688487132993903`*^9, 3.568848730679384*^9}, {
    3.568848907759513*^9, 3.568848908975582*^9}, {3.5688489487838593`*^9, 
-   3.5688489494158955`*^9}, 3.568849075792124*^9}],
+   3.5688489494158955`*^9}, 3.568849075792124*^9, {3.571270149080102*^9, 
+   3.5712701886643667`*^9}}],
 
 Cell[BoxData[
  GraphicsBox[{{{}, {{}, {}, 
@@ -173,11 +180,12 @@ YjEcTbXSTLIi883U9TJpEcPAmqZQc+ISN0fe9CYx/A8X5ZaQ
   Axes->True,
   AxesOrigin->{2., 0.20338},
   Frame->True,
-  FrameLabel->{
-    FormBox[
-    "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
-    FormBox["\"<|M|>\"", TraditionalForm]},
-  ImageSize->Large,
+  FrameLabel->{{
+     FormBox["\"<|M|>\"", TraditionalForm], None}, {
+     FormBox[
+     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
+     None}},
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{All, All},
@@ -187,14 +195,23 @@ YjEcTbXSTLIi883U9TJpEcPAmqZQc+ISN0fe9CYx/A8X5ZaQ
   3.5688487679885187`*^9, {3.568848802034466*^9, 3.568848813578126*^9}, {
    3.5688489100066414`*^9, 3.568848955426239*^9}, {3.5688489928823814`*^9, 
    3.5688490151336546`*^9}, {3.568849059190174*^9, 3.568849076412159*^9}, 
-   3.568849107419933*^9, 3.5688491408938475`*^9, 3.5689184350692472`*^9}]
+   3.568849107419933*^9, 3.5688491408938475`*^9, 3.5689184350692472`*^9, 
+   3.571270233907954*^9, 3.5712703252101765`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
- RowBox[{"criticalPlot", "[", 
-  RowBox[{"WL32x32", ",", "1.21"}], "]"}]], "Input"],
+Cell[BoxData[{
+ RowBox[{"h2", "=", 
+  RowBox[{"criticalPlot", "[", 
+   RowBox[{"WL32x32", ",", "1.21"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critexp32-wanglandau.eps\>\"", ",", " ", "h2"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.571270191015501*^9, 3.571270203032188*^9}}],
 
 Cell[BoxData[
  GraphicsBox[{{{}, {{}, {}, 
@@ -318,26 +335,35 @@ YjEcTbXSTLIi883U9TJpEcPAmqZQc+ISN0fe9CYx/A8X5ZaQ
   Axes->True,
   AxesOrigin->{2., 0.206867},
   Frame->True,
-  FrameLabel->{
-    FormBox[
-    "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
-    FormBox["\"<|M|>\"", TraditionalForm]},
-  ImageSize->Large,
+  FrameLabel->{{
+     FormBox["\"<|M|>\"", TraditionalForm], None}, {
+     FormBox[
+     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
+     None}},
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{All, All},
   PlotRangeClipping->True,
   PlotRangePadding->{Automatic, Automatic}]], "Output",
  CellChangeTimes->{3.5688491088690157`*^9, 3.5688491423619313`*^9, 
-  3.5689184351052494`*^9}]
+  3.5689184351052494`*^9, 3.571270234203971*^9, 3.571270325477192*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
- RowBox[{"criticalPlot", "[", 
-  RowBox[{"M128x128", ",", "1.21"}], "]"}]], "Input",
- CellChangeTimes->{{3.5688565049120455`*^9, 3.5688565090722833`*^9}}],
+Cell[BoxData[{
+ RowBox[{"h3", " ", "=", " ", 
+  RowBox[{"criticalPlot", "[", 
+   RowBox[{"M128x128", ",", "1.21"}], "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critexp128-metropolis.eps\>\"", ",", " ", "h3"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.5688565049120455`*^9, 3.5688565090722833`*^9}, {
+  3.5712702102396*^9, 3.571270223944384*^9}}],
 
 Cell[BoxData[
  GraphicsBox[{{{}, {{}, {}, 
@@ -460,22 +486,24 @@ YjEcTbXSTLIi883U9TJpEcPAmqZQc+ISN0fe9CYx/A8X5ZaQ
   Axes->True,
   AxesOrigin->{2., 0.04664},
   Frame->True,
-  FrameLabel->{
-    FormBox[
-    "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
-    FormBox["\"<|M|>\"", TraditionalForm]},
-  ImageSize->Large,
+  FrameLabel->{{
+     FormBox["\"<|M|>\"", TraditionalForm], None}, {
+     FormBox[
+     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
+     None}},
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{All, All},
   PlotRangeClipping->True,
   PlotRangePadding->{Automatic, Automatic}]], "Output",
- CellChangeTimes->{3.568856509806325*^9, 3.568918435143252*^9}]
+ CellChangeTimes->{3.568856509806325*^9, 3.568918435143252*^9, 
+  3.5712702345069885`*^9, 3.571270325734206*^9}]
 }, Open  ]]
 },
 WindowSize->{875, 1042},
 WindowMargins->{{Automatic, 62}, {0, Automatic}},
-FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (January 25, 2013)",
 StyleDefinitions->"Default.nb"
 ]
 

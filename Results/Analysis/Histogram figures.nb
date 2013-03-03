@@ -9,8 +9,16 @@ Cell[BoxData[{
     "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Data\\\\\
 CriticalTemp\\\\Metropolis\\\\8x8\\\\criticaltemp.txt\>\"", ",", 
      "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"histPlot", "[", "M8x8", "]"}]}], "Input",
- CellChangeTimes->{{3.5670586579637785`*^9, 3.5670586855663576`*^9}}],
+ RowBox[{"g1", " ", "=", " ", 
+  RowBox[{"histPlot", "[", "M8x8", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critical8-metropolis.eps\>\"", ",", " ", "g1"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.5670586579637785`*^9, 3.5670586855663576`*^9}, {
+  3.5712692970643697`*^9, 3.571269327256097*^9}}],
 
 Cell[CellGroupData[{
 
@@ -23,7 +31,9 @@ Cell[BoxData[
   3.5670586865454135`*^9, 3.5676086617069902`*^9, 3.5676970727066183`*^9, 
    3.5686278869685006`*^9, 3.5686281195208015`*^9, {3.5686281871536703`*^9, 
    3.568628196253191*^9}, 3.5686282408657427`*^9, {3.568628314720967*^9, 
-   3.5686283256475916`*^9}, 3.568714392292322*^9}],
+   3.5686283256475916`*^9}, 3.568714392292322*^9, 3.5712692477195473`*^9, 
+   3.571269334089487*^9, 3.571269570130988*^9, 3.571270015375455*^9, 
+   3.5712700710966415`*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -35,7 +45,9 @@ Cell[BoxData[
   3.5670586865454135`*^9, 3.5676086617069902`*^9, 3.5676970727066183`*^9, 
    3.5686278869685006`*^9, 3.5686281195208015`*^9, {3.5686281871536703`*^9, 
    3.568628196253191*^9}, 3.5686282408657427`*^9, {3.568628314720967*^9, 
-   3.5686283256475916`*^9}, 3.568714392294322*^9}]
+   3.5686283256475916`*^9}, 3.568714392292322*^9, 3.5712692477195473`*^9, 
+   3.571269334089487*^9, 3.571269570130988*^9, 3.571270015375455*^9, 
+   3.5712700710986423`*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -303,7 +315,7 @@ VW16X4mxQmxRR8EmVpZV7QseRiNL2CPftsbMpKxo/3Xy7tdsJyC45lrziMSK
     FormBox[
     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
-  ImageSize->Large,
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{{2.1, 2.5}, All},
@@ -313,7 +325,9 @@ VW16X4mxQmxRR8EmVpZV7QseRiNL2CPftsbMpKxo/3Xy7tdsJyC45lrziMSK
   3.5670586865484133`*^9, 3.5676086617729936`*^9, 3.5676970727666187`*^9, 
    3.568627886977501*^9, 3.5686281195328026`*^9, {3.568628187164671*^9, 
    3.568628196264191*^9}, 3.5686282408777432`*^9, {3.5686283147339673`*^9, 
-   3.568628325660592*^9}, 3.5687143922963223`*^9}]
+   3.568628325660592*^9}, 3.5687143922963223`*^9, 3.571269247735548*^9, 
+   3.571269334102488*^9, 3.5712695701339884`*^9, 3.5712700153884554`*^9, 
+   3.571270071100642*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -326,8 +340,16 @@ Cell[BoxData[{
     "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Data\\\\\
 CriticalTemp\\\\Wanglandau\\\\8x8\\\\criticaltemp.txt\>\"", ",", 
      "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"histPlot", "[", "WL8x8", "]"}]}], "Input",
- CellChangeTimes->{{3.5670587057105093`*^9, 3.5670587201583357`*^9}}],
+ RowBox[{"g2", "=", " ", 
+  RowBox[{"histPlot", "[", "WL8x8", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critical8-wanglandau.eps\>\"", ",", " ", "g2"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.5670587057105093`*^9, 3.5670587201583357`*^9}, {
+  3.571269369208496*^9, 3.5712693830832896`*^9}}],
 
 Cell[CellGroupData[{
 
@@ -338,7 +360,8 @@ Cell[BoxData[
   Editable->False]], "Print",
  CellChangeTimes->{3.567058721165394*^9, 3.5673299579567223`*^9, 
   3.567341840644801*^9, 3.567697072976619*^9, 3.568627890244688*^9, 
-  3.5686283258376026`*^9, 3.568714392467332*^9}],
+  3.5686283258376026`*^9, 3.568714392467332*^9, 3.571269247883557*^9, 
+  3.5712695705160103`*^9, 3.571270015730475*^9, 3.5712700714406614`*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -348,7 +371,8 @@ Cell[BoxData[
   Editable->False]], "Print",
  CellChangeTimes->{3.567058721165394*^9, 3.5673299579567223`*^9, 
   3.567341840644801*^9, 3.567697072976619*^9, 3.568627890244688*^9, 
-  3.5686283258376026`*^9, 3.5687143924683323`*^9}]
+  3.5686283258376026`*^9, 3.568714392467332*^9, 3.571269247883557*^9, 
+  3.5712695705160103`*^9, 3.571270015730475*^9, 3.5712700714426613`*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -789,7 +813,7 @@ sHne8A+I3QAo
     FormBox[
     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
-  ImageSize->Large,
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{{2.1, 2.5}, All},
@@ -797,7 +821,8 @@ sHne8A+I3QAo
   PlotRangePadding->{Automatic, Automatic}]], "Output",
  CellChangeTimes->{3.5670587211693935`*^9, 3.5673299579879227`*^9, 
   3.567341840644801*^9, 3.567697072986619*^9, 3.568627890248688*^9, 
-  3.568628325840603*^9, 3.5687143924713326`*^9}]
+  3.568628325840603*^9, 3.5687143924713326`*^9, 3.5712692478865566`*^9, 
+  3.571269570522011*^9, 3.571270015733475*^9, 3.571270071453662*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -810,9 +835,17 @@ Cell[BoxData[{
     "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Data\\\\\
 CriticalTemp\\\\Metropolis\\\\16x16\\\\criticaltemp.txt\>\"", ",", 
      "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"histPlot", "[", "M16x16", "]"}]}], "Input",
+ RowBox[{"g3", " ", "=", " ", 
+  RowBox[{"histPlot", "[", "M16x16", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critical16-metropolis.eps\>\"", ",", " ", "g3"}], "]"}], 
+  ";"}]}], "Input",
  CellChangeTimes->{{3.567070084250961*^9, 3.5670700947385607`*^9}, {
-  3.5674483310829506`*^9, 3.567448334655357*^9}}],
+  3.5674483310829506`*^9, 3.567448334655357*^9}, {3.5712693974321103`*^9, 
+  3.5712694118569355`*^9}}],
 
 Cell[CellGroupData[{
 
@@ -823,7 +856,8 @@ Cell[BoxData[
   Editable->False]], "Print",
  CellChangeTimes->{3.567070095743618*^9, 3.567448337496562*^9, 
   3.567608715339058*^9, 3.567697073076619*^9, 3.5686278921747985`*^9, 
-  3.568628325931608*^9, 3.568714392569338*^9}],
+  3.568628325931608*^9, 3.568714392569338*^9, 3.5712692479845624`*^9, 
+  3.57126957086703*^9, 3.571270016047493*^9, 3.5712700717546797`*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -833,7 +867,8 @@ Cell[BoxData[
   Editable->False]], "Print",
  CellChangeTimes->{3.567070095743618*^9, 3.567448337496562*^9, 
   3.567608715339058*^9, 3.567697073076619*^9, 3.5686278921747985`*^9, 
-  3.568628325931608*^9, 3.5687143925703382`*^9}]
+  3.568628325931608*^9, 3.568714392569338*^9, 3.5712692479845624`*^9, 
+  3.57126957086703*^9, 3.571270016047493*^9, 3.5712700717566795`*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -1114,7 +1149,7 @@ A/tTYYRgNp0MKk7xZ5PYImA/21pkKPUgkrn7kPEqdl/f0+iLI9IoP6qGphS7
     FormBox[
     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
-  ImageSize->Large,
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{{2.1, 2.5}, All},
@@ -1122,7 +1157,8 @@ A/tTYYRgNp0MKk7xZ5PYImA/21pkKPUgkrn7kPEqdl/f0+iLI9IoP6qGphS7
   PlotRangePadding->{Automatic, Automatic}]], "Output",
  CellChangeTimes->{3.567070095756619*^9, 3.5674483375433617`*^9, 
   3.5676087153620586`*^9, 3.567697073106619*^9, 3.5686278921777983`*^9, 
-  3.5686283259436083`*^9, 3.568714392572338*^9}]
+  3.5686283259436083`*^9, 3.568714392572338*^9, 3.571269247987563*^9, 
+  3.5712695708730307`*^9, 3.5712700160514936`*^9, 3.57127007176668*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1135,8 +1171,10 @@ Cell[BoxData[{
     "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Data\\\\\
 CriticalTemp\\\\WangLandau\\\\16x16\\\\criticaltemp.txt\>\"", ",", 
      "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"histPlot", "[", "WL16x16", "]"}]}], "Input",
- CellChangeTimes->{{3.567448291552481*^9, 3.5674483173081264`*^9}}],
+ RowBox[{"g4", " ", "=", " ", 
+  RowBox[{"histPlot", "[", "WL16x16", "]"}]}]}], "Input",
+ CellChangeTimes->{{3.567448291552481*^9, 3.5674483173081264`*^9}, {
+  3.5712694241366377`*^9, 3.571269424823677*^9}}],
 
 Cell[CellGroupData[{
 
@@ -1145,8 +1183,8 @@ Cell[BoxData[
   RowBox[{"\<\"Mean = \"\>", "\[InvisibleSpace]", "2.3166754095999993`"}],
   SequenceForm["Mean = ", 2.3166754095999993`],
   Editable->False]], "Print",
- CellChangeTimes->{3.567448349316783*^9, 3.5676970732266192`*^9, 
-  3.5686278941709127`*^9, 3.568628326035614*^9, 3.568714392693345*^9}],
+ CellChangeTimes->{3.57126957121105*^9, 3.5712700163715115`*^9, 
+  3.5712700720846987`*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -1154,8 +1192,8 @@ Cell[BoxData[
    "1.0921314833023226`", "\[InvisibleSpace]", "\<\"%\"\>"}],
   SequenceForm["Coefficient of variation = ", 1.0921314833023226`, "%"],
   Editable->False]], "Print",
- CellChangeTimes->{3.567448349316783*^9, 3.5676970732266192`*^9, 
-  3.5686278941709127`*^9, 3.568628326035614*^9, 3.5687143926943455`*^9}]
+ CellChangeTimes->{3.57126957121105*^9, 3.5712700163715115`*^9, 
+  3.571270072085698*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -1513,15 +1551,24 @@ kGIlVEuMGU3BPY8u3fuZy0I8fvaXLg68wvy0qOogC0HOvU9pBfNO7ZfWymGG
     FormBox[
     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
-  ImageSize->Large,
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{{2.1, 2.5}, All},
   PlotRangeClipping->True,
   PlotRangePadding->{Automatic, Automatic}]], "Output",
- CellChangeTimes->{3.567448349332383*^9, 3.567697073246619*^9, 
-  3.568627894173913*^9, 3.5686283260386143`*^9, 3.5687143926963453`*^9}]
+ CellChangeTimes->{3.5712695712140503`*^9, 3.571270016375512*^9, 
+  3.5712700720876985`*^9}]
 }, Open  ]],
+
+Cell[BoxData[
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critical16-wanglandau.eps\>\"", ",", " ", "g4"}], "]"}], 
+  ";"}]], "Input",
+ CellChangeTimes->{{3.5712694276638393`*^9, 3.571269433041147*^9}}],
 
 Cell[CellGroupData[{
 
@@ -1533,8 +1580,16 @@ Cell[BoxData[{
     "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Data\\\\\
 CriticalTemp\\\\Metropolis\\\\24x24\\\\criticaltemp.txt\>\"", ",", 
      "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"histPlot", "[", "M24x24", "]"}]}], "Input",
- CellChangeTimes->{{3.568112086478815*^9, 3.568112102827644*^9}}],
+ RowBox[{"g5", " ", "=", " ", 
+  RowBox[{"histPlot", "[", "M24x24", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critical24-metropolis.eps\>\"", ",", " ", "g5"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.568112086478815*^9, 3.568112102827644*^9}, {
+  3.5712694398635373`*^9, 3.57126945268027*^9}}],
 
 Cell[CellGroupData[{
 
@@ -1544,7 +1599,8 @@ Cell[BoxData[
   SequenceForm["Mean = ", 2.256075950900001],
   Editable->False]], "Print",
  CellChangeTimes->{3.568112104153646*^9, 3.568627900527276*^9, 
-  3.5686283262046237`*^9, 3.56871439277635*^9}],
+  3.5686283262046237`*^9, 3.56871439277635*^9, 3.5712692481835737`*^9, 
+  3.571269571576071*^9, 3.571270016702531*^9, 3.5712700724047165`*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -1553,7 +1609,8 @@ Cell[BoxData[
   SequenceForm["Coefficient of variation = ", 2.178186543155443, "%"],
   Editable->False]], "Print",
  CellChangeTimes->{3.568112104153646*^9, 3.568627900527276*^9, 
-  3.5686283262046237`*^9, 3.56871439277735*^9}]
+  3.5686283262046237`*^9, 3.56871439277635*^9, 3.5712692481835737`*^9, 
+  3.571269571576071*^9, 3.571270016702531*^9, 3.571270072405717*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -1777,14 +1834,15 @@ h6/vE69Hc6fbB7VTKUC1dShbePYGjTh7vHe5ifM8+0l4oa8Oudlers3CPk4b
     FormBox[
     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
-  ImageSize->Large,
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{{2.1, 2.5}, All},
   PlotRangeClipping->True,
   PlotRangePadding->{Automatic, Automatic}]], "Output",
  CellChangeTimes->{3.5681121042316465`*^9, 3.5686279005302763`*^9, 
-  3.568628326208624*^9, 3.5687143927793503`*^9}]
+  3.568628326208624*^9, 3.5687143927793503`*^9, 3.571269248186574*^9, 
+  3.571269571588072*^9, 3.5712700167065306`*^9, 3.571270072408717*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -1797,8 +1855,16 @@ Cell[BoxData[{
     "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Data\\\\\
 CriticalTemp\\\\WangLandau\\\\24x24\\\\criticaltemp.txt\>\"", ",", 
      "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"histPlot", "[", "W24x24", "]"}]}], "Input",
- CellChangeTimes->{{3.568627982730978*^9, 3.5686279986348877`*^9}}],
+ RowBox[{"g6", " ", "=", " ", 
+  RowBox[{"histPlot", "[", "W24x24", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critical24-wanglandau.eps\>\"", ",", " ", "g6"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.568627982730978*^9, 3.5686279986348877`*^9}, {
+  3.5712694607837343`*^9, 3.5712694979288588`*^9}}],
 
 Cell[CellGroupData[{
 
@@ -1808,7 +1874,8 @@ Cell[BoxData[
   SequenceForm["Mean = ", 2.2987445192],
   Editable->False]], "Print",
  CellChangeTimes->{3.56862799920192*^9, 3.5686283263026295`*^9, 
-  3.5687143928793554`*^9}],
+  3.5687143928793554`*^9, 3.571269248276579*^9, 3.5712695719120903`*^9, 
+  3.571270017025549*^9, 3.571270072731735*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -1817,7 +1884,8 @@ Cell[BoxData[
   SequenceForm["Coefficient of variation = ", 1.3064904959880237`, "%"],
   Editable->False]], "Print",
  CellChangeTimes->{3.56862799920192*^9, 3.5686283263026295`*^9, 
-  3.568714392880356*^9}]
+  3.5687143928793554`*^9, 3.571269248276579*^9, 3.5712695719120903`*^9, 
+  3.571270017025549*^9, 3.5712700727327356`*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -2109,14 +2177,15 @@ q+CqfWTIYC5/Hi2xNu57uOU+oq579caONDo0Z4Um8//VJpka0lkO6AORTCv2
     FormBox[
     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
-  ImageSize->Large,
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{{2.1, 2.5}, All},
   PlotRangeClipping->True,
   PlotRangePadding->{Automatic, Automatic}]], "Output",
  CellChangeTimes->{3.5686279992129207`*^9, 3.5686283263056293`*^9, 
-  3.5687143928893566`*^9}]
+  3.5687143928893566`*^9, 3.571269248279579*^9, 3.5712695719150906`*^9, 
+  3.571270017029549*^9, 3.571270072735736*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2129,8 +2198,16 @@ Cell[BoxData[{
     "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Data\\\\\
 CriticalTemp\\\\Metropolis\\\\32x32\\\\criticaltemp.txt\>\"", ",", 
      "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"histPlot", "[", "M32x32", "]"}]}], "Input",
- CellChangeTimes->{{3.5680070312404823`*^9, 3.568007048712513*^9}}],
+ RowBox[{"g7", " ", "=", " ", 
+  RowBox[{"histPlot", "[", "M32x32", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critical32-metropolis.eps\>\"", ",", " ", "g7"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.5680070312404823`*^9, 3.568007048712513*^9}, {
+  3.5712695110166073`*^9, 3.571269521856227*^9}}],
 
 Cell[CellGroupData[{
 
@@ -2140,7 +2217,8 @@ Cell[BoxData[
   SequenceForm["Mean = ", 2.2671769531999995`],
   Editable->False]], "Print",
  CellChangeTimes->{3.5680070500697155`*^9, 3.5686279036764565`*^9, 
-  3.5686283263886337`*^9, 3.5687143929633603`*^9}],
+  3.5686283263886337`*^9, 3.5687143929633603`*^9, 3.5712692483665843`*^9, 
+  3.571269572227108*^9, 3.571270017331567*^9, 3.571270073037753*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -2149,7 +2227,8 @@ Cell[BoxData[
   SequenceForm["Coefficient of variation = ", 2.0487169152996034`, "%"],
   Editable->False]], "Print",
  CellChangeTimes->{3.5680070500697155`*^9, 3.5686279036764565`*^9, 
-  3.5686283263886337`*^9, 3.5687143929643607`*^9}]
+  3.5686283263886337`*^9, 3.5687143929633603`*^9, 3.5712692483665843`*^9, 
+  3.571269572227108*^9, 3.571270017331567*^9, 3.5712700730387526`*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -2386,14 +2465,15 @@ edV6yuREqUfqR82z9LCJW8S8b0r1qJ479F46tsr9yJRFUj36H4rwZBM=
     FormBox[
     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
-  ImageSize->Large,
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{{2.1, 2.5}, All},
   PlotRangeClipping->True,
   PlotRangePadding->{Automatic, Automatic}]], "Output",
  CellChangeTimes->{3.5680070501321154`*^9, 3.5686279036884565`*^9, 
-  3.568628326391634*^9, 3.568714392966361*^9}]
+  3.568628326391634*^9, 3.568714392966361*^9, 3.571269248369584*^9, 
+  3.5712695722381086`*^9, 3.5712700173355665`*^9, 3.571270073040753*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
@@ -2406,8 +2486,16 @@ Cell[BoxData[{
     "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Data\\\\\
 CriticalTemp\\\\Metropolis\\\\64x64\\\\criticaltemp.txt\>\"", ",", 
      "\"\<Table\>\""}], "]"}]}], ";"}], "\[IndentingNewLine]", 
- RowBox[{"histPlot", "[", "M64x64", "]"}]}], "Input",
- CellChangeTimes->{{3.568627913939043*^9, 3.5686279365703373`*^9}}],
+ RowBox[{"g8", " ", "=", " ", 
+  RowBox[{"histPlot", "[", "M64x64", "]"}]}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\critical64-metropolis.eps\>\"", ",", " ", "g8"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.568627913939043*^9, 3.5686279365703373`*^9}, {
+  3.5712695359840355`*^9, 3.571269546184619*^9}}],
 
 Cell[CellGroupData[{
 
@@ -2417,7 +2505,8 @@ Cell[BoxData[
   SequenceForm["Mean = ", 2.268385046200001],
   Editable->False]], "Print",
  CellChangeTimes->{3.5686279394115*^9, 3.5686283264706388`*^9, 
-  3.5687143930433655`*^9}],
+  3.5687143930433655`*^9, 3.571269248445589*^9, 3.5712695725671277`*^9, 
+  3.5712700176295834`*^9, 3.5712700733627715`*^9}],
 
 Cell[BoxData[
  InterpretationBox[
@@ -2426,7 +2515,8 @@ Cell[BoxData[
   SequenceForm["Coefficient of variation = ", 2.3767949402617448`, "%"],
   Editable->False]], "Print",
  CellChangeTimes->{3.5686279394115*^9, 3.5686283264706388`*^9, 
-  3.568714393044365*^9}]
+  3.5687143930433655`*^9, 3.571269248445589*^9, 3.5712695725671277`*^9, 
+  3.5712700176295834`*^9, 3.571270073364772*^9}]
 }, Open  ]],
 
 Cell[BoxData[
@@ -2633,20 +2723,21 @@ OKM5+C7PE8Y7XW5aI3/0VfSc95snXgnHXruOfEGou47rwDzxPzjckiI=
     FormBox[
     "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", TraditionalForm], 
     FormBox["\"Count\"", TraditionalForm]},
-  ImageSize->Large,
+  ImageSize->{450, 280},
   LabelStyle->Medium,
   Method->{},
   PlotRange->{{2.1, 2.5}, All},
   PlotRangeClipping->True,
   PlotRangePadding->{Automatic, Automatic}]], "Output",
  CellChangeTimes->{3.5686279394135003`*^9, 3.5686283264736385`*^9, 
-  3.5687143930463653`*^9}]
+  3.5687143930463653`*^9, 3.571269248451589*^9, 3.571269572572128*^9, 
+  3.5712700176325836`*^9, 3.5712700733667717`*^9}]
 }, Open  ]]
 },
 WindowSize->{913, 1042},
-WindowMargins->{{0, Automatic}, {0, Automatic}},
+WindowMargins->{{Automatic, -9}, {Automatic, -3}},
 PrivateNotebookOptions->{"VersionedStylesheet"->{"Default.nb"[8.] -> False}},
-FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (November 20, 2012)",
+FrontEndVersion->"9.0 for Microsoft Windows (64-bit) (January 25, 2013)",
 StyleDefinitions->"Default.nb"
 ]
 

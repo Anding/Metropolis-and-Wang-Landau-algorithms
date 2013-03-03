@@ -56,16 +56,24 @@ StateProfile\\\\Wanglandau\\\\8x8x8x8\\\\experiment.txt\>\"", ",",
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"magPlot", "[", 
-   RowBox[{"M32x32", ",", "M8x8x8", ",", "M8x8x8x8", ",", " ", 
-    RowBox[{"2", " ", "D"}], ",", " ", 
-    RowBox[{"3", "D"}], ",", " ", 
-    RowBox[{"4", " ", "D"}]}], "]"}], " "}]], "Input",
+  RowBox[{"f1", "=", " ", 
+   RowBox[{"magPlot", "[", 
+    RowBox[{"M32x32", ",", "M8x8x8", ",", "M8x8x8x8", ",", " ", 
+     RowBox[{"2", " ", "D"}], ",", " ", 
+     RowBox[{"3", "D"}], ",", " ", 
+     RowBox[{"4", " ", "D"}]}], "]"}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\magnetization-metropolis.eps\>\"", ",", " ", "f1"}], "]"}], 
+  ";"}]}], "Input",
  CellChangeTimes->{{3.5686258172681203`*^9, 3.568625877347557*^9}, {
   3.5686262824677286`*^9, 3.568626290971215*^9}, {3.56862669230717*^9, 
-  3.568626693564242*^9}}],
+  3.568626693564242*^9}, {3.57126827078467*^9, 3.571268411832737*^9}, {
+  3.5712689181856995`*^9, 3.5712689223209352`*^9}}],
 
 Cell[BoxData[
  TemplateBox[{GraphicsBox[{{}, {{}, {}, {
@@ -285,8 +293,8 @@ r36Df/8z/v/7X54B6qw=
        FormBox["\"<|M|>\"", TraditionalForm], None}, {
        FormBox[
        "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", 
-        TraditionalForm], None}}, ImageSize -> Large, LabelStyle -> Medium, 
-    Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
+        TraditionalForm], None}}, ImageSize -> {600, 400}, LabelStyle -> 
+    Medium, Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
     PlotRangePadding -> {Automatic, Automatic}],TemplateBox[{
      RowBox[{"2", " ", "D"}], 
      RowBox[{"3", " ", "D"}], 
@@ -415,20 +423,31 @@ r36Df/8z/v/7X54B6qw=
    3.5712657382798185`*^9, 3.5712657558238225`*^9}, {3.571265796591154*^9, 
    3.571265805871685*^9}, 3.5712658496151867`*^9, 3.571265882942093*^9, 
    3.5712662611677265`*^9, 3.571266532177227*^9, 3.5712666484808793`*^9, 
-   3.571266733376735*^9, 3.57126721687939*^9, 3.5712674960973606`*^9}]
+   3.571266733376735*^9, 3.57126721687939*^9, 3.5712674960973606`*^9, {
+   3.571268400093066*^9, 3.571268412176757*^9}, {3.571268541401148*^9, 
+   3.571268569352747*^9}, {3.571268617617508*^9, 3.571268626281003*^9}, 
+   3.571268923001974*^9, 3.5712690698623743`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"magPlot", "[", 
-   RowBox[{"WL32x32", ",", "WL8x8x8", ",", "WL8x8x8x8", ",", " ", 
-    RowBox[{"2", " ", "D"}], ",", " ", 
-    RowBox[{"3", "D"}], ",", " ", 
-    RowBox[{"4", " ", "D"}]}], "]"}], " "}]], "Input",
+  RowBox[{"f2", "=", " ", 
+   RowBox[{"magPlot", "[", 
+    RowBox[{"WL32x32", ",", "WL8x8x8", ",", "WL8x8x8x8", ",", " ", 
+     RowBox[{"2", " ", "D"}], ",", " ", 
+     RowBox[{"3", "D"}], ",", " ", 
+     RowBox[{"4", " ", "D"}]}], "]"}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\magnetization-wanglandau.eps\>\"", ",", " ", "f2"}], "]"}], 
+  ";"}]}], "Input",
  CellChangeTimes->{{3.5687109718536844`*^9, 3.5687109719886923`*^9}, {
-  3.568711163365638*^9, 3.568711163557649*^9}}],
+  3.568711163365638*^9, 3.568711163557649*^9}, {3.5712687976488047`*^9, 
+  3.5712688341608934`*^9}, {3.571268927377225*^9, 3.571268932161498*^9}}],
 
 Cell[BoxData[
  TemplateBox[{GraphicsBox[{{}, {{}, {}, {
@@ -634,8 +653,8 @@ A/yuJL0QvWZjVc2tbZkz6fA/YPiyCg==
        FormBox["\"<|M|>\"", TraditionalForm], None}, {
        FormBox[
        "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", 
-        TraditionalForm], None}}, ImageSize -> Large, LabelStyle -> Medium, 
-    Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
+        TraditionalForm], None}}, ImageSize -> {600, 400}, LabelStyle -> 
+    Medium, Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
     PlotRangePadding -> {Automatic, Automatic}],TemplateBox[{
      RowBox[{"2", " ", "D"}], 
      RowBox[{"3", " ", "D"}], 
@@ -767,19 +786,28 @@ A/yuJL0QvWZjVc2tbZkz6fA/YPiyCg==
    3.568750359053503*^9, 3.5687507117376757`*^9, 3.5687512552677636`*^9, 
    3.568751399229998*^9, 3.5687515884848223`*^9, {3.571265858953721*^9, 
    3.5712658850632143`*^9}, 3.571266263829879*^9, 3.5712665347143726`*^9, 
-   3.5712666498739595`*^9, 3.5712667362819014`*^9, 3.5712674963373737`*^9}]
+   3.5712666498739595`*^9, 3.5712667362819014`*^9, 3.5712674963373737`*^9, 
+   3.571268890485115*^9, 3.571268933039549*^9, 3.571269070346402*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"energyPlot", "[", 
-   RowBox[{"M32x32", ",", "M8x8x8", ",", "M8x8x8x8", ",", " ", 
-    RowBox[{"2", " ", "D"}], ",", " ", 
-    RowBox[{"3", "D"}], ",", " ", 
-    RowBox[{"4", " ", "D"}]}], "]"}], " "}]], "Input",
- CellChangeTimes->{{3.568626773538816*^9, 3.568626776730999*^9}}],
+  RowBox[{"f3", " ", "=", " ", 
+   RowBox[{"energyPlot", "[", 
+    RowBox[{"M32x32", ",", "M8x8x8", ",", "M8x8x8x8", ",", " ", 
+     RowBox[{"2", " ", "D"}], ",", " ", 
+     RowBox[{"3", "D"}], ",", " ", 
+     RowBox[{"4", " ", "D"}]}], "]"}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\energy-metropolis.eps\>\"", ",", " ", "f3"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.568626773538816*^9, 3.568626776730999*^9}, {
+  3.5712689446962156`*^9, 3.5712689860965834`*^9}}],
 
 Cell[BoxData[
  TemplateBox[{GraphicsBox[{{}, {{}, {}, {
@@ -1001,8 +1029,8 @@ lIRn/jf6yOHj5wZ/8P8AX+bgPw==
        FormBox["\"<E>\"", TraditionalForm], None}, {
        FormBox[
        "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", 
-        TraditionalForm], None}}, ImageSize -> Large, LabelStyle -> Medium, 
-    Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
+        TraditionalForm], None}}, ImageSize -> {600, 400}, LabelStyle -> 
+    Medium, Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
     PlotRangePadding -> {Automatic, Automatic}],TemplateBox[{
      RowBox[{"2", " ", "D"}], 
      RowBox[{"3", " ", "D"}], 
@@ -1130,19 +1158,28 @@ lIRn/jf6yOHj5wZ/8P8AX+bgPw==
  CellChangeTimes->{3.56862677745504*^9, 3.5686296345664577`*^9, 
   3.568710617503416*^9, 3.5687503591285076`*^9, 3.568750711792679*^9, 
   3.568751255324767*^9, 3.568751399286001*^9, 3.568751588548826*^9, 
-  3.571265901105132*^9, 3.571265933578989*^9, 3.5712674964053783`*^9}]
+  3.571265901105132*^9, 3.571265933578989*^9, 3.5712674964053783`*^9, 
+  3.5712690706464195`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"energyPlot", "[", 
-   RowBox[{"WL32x32", ",", "WL8x8x8", ",", "WL8x8x8x8", ",", " ", 
-    RowBox[{"2", " ", "D"}], ",", " ", 
-    RowBox[{"3", "D"}], ",", " ", 
-    RowBox[{"4", " ", "D"}]}], "]"}], " "}]], "Input",
- CellChangeTimes->{{3.568711187429014*^9, 3.568711194205402*^9}}],
+  RowBox[{"f4", " ", "=", 
+   RowBox[{"energyPlot", "[", 
+    RowBox[{"WL32x32", ",", "WL8x8x8", ",", "WL8x8x8x8", ",", " ", 
+     RowBox[{"2", " ", "D"}], ",", " ", 
+     RowBox[{"3", "D"}], ",", " ", 
+     RowBox[{"4", " ", "D"}]}], "]"}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\energy-wanglandau.eps\>\"", ",", " ", "f4"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.568711187429014*^9, 3.568711194205402*^9}, {
+  3.5712689928799715`*^9, 3.571269009743936*^9}}],
 
 Cell[BoxData[
  TemplateBox[{GraphicsBox[{{}, {{}, {}, {
@@ -1350,8 +1387,8 @@ reen3drR/zo2qOI=
        FormBox["\"<E>\"", TraditionalForm], None}, {
        FormBox[
        "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", 
-        TraditionalForm], None}}, ImageSize -> Large, LabelStyle -> Medium, 
-    Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
+        TraditionalForm], None}}, ImageSize -> {600, 400}, LabelStyle -> 
+    Medium, Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
     PlotRangePadding -> {Automatic, Automatic}],TemplateBox[{
      RowBox[{"2", " ", "D"}], 
      RowBox[{"3", " ", "D"}], 
@@ -1476,22 +1513,32 @@ reen3drR/zo2qOI=
      RowBox[{#, ",", 
        RowBox[{"Placed", "[", 
          RowBox[{#2, ",", "After"}], "]"}]}], "]"}]& )]], "Output",
- CellChangeTimes->{3.568711195057451*^9, 3.568750359202512*^9, 
-  3.568750711848682*^9, 3.56875125538177*^9, 3.568751399343004*^9, 
-  3.568751589014853*^9, 3.571265935822118*^9, 3.5712674966713934`*^9}]
+ CellChangeTimes->{
+  3.568711195057451*^9, 3.568750359202512*^9, 3.568750711848682*^9, 
+   3.56875125538177*^9, 3.568751399343004*^9, 3.568751589014853*^9, 
+   3.571265935822118*^9, 3.5712674966713934`*^9, {3.571268996753193*^9, 
+   3.5712690127141056`*^9}, 3.57126907117645*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"heatCapPlot", "[", 
-   RowBox[{"M32x32", ",", "M8x8x8", ",", "M8x8x8x8", ",", " ", 
-    RowBox[{"2", " ", "D"}], ",", " ", 
-    RowBox[{"3", "D"}], ",", " ", 
-    RowBox[{"4", " ", "D"}]}], "]"}], " "}]], "Input",
+  RowBox[{"f5", " ", "=", 
+   RowBox[{"heatCapPlot", "[", 
+    RowBox[{"M32x32", ",", "M8x8x8", ",", "M8x8x8x8", ",", " ", 
+     RowBox[{"2", " ", "D"}], ",", " ", 
+     RowBox[{"3", "D"}], ",", " ", 
+     RowBox[{"4", " ", "D"}]}], "]"}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\heatcapacity-metropolis.eps\>\"", ",", " ", "f5"}], "]"}], 
+  ";"}]}], "Input",
  CellChangeTimes->{{3.5686270411471224`*^9, 3.5686270462194123`*^9}, {
-  3.5712659409924135`*^9, 3.5712659422724867`*^9}}],
+  3.5712659409924135`*^9, 3.5712659422724867`*^9}, {3.571269018455434*^9, 
+  3.5712690369444914`*^9}}],
 
 Cell[BoxData[
  TemplateBox[{GraphicsBox[{{}, {{}, {}, {
@@ -1714,8 +1761,8 @@ JeSbU6D+d8Kx3qvzhv/9N6ZAWeZtFJ/NmOH/ACV6yGM=
        FormBox["\"<C>\"", TraditionalForm], None}, {
        FormBox[
        "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", 
-        TraditionalForm], None}}, ImageSize -> Large, LabelStyle -> Medium, 
-    Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
+        TraditionalForm], None}}, ImageSize -> {600, 400}, LabelStyle -> 
+    Medium, Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
     PlotRangePadding -> {Automatic, Automatic}],TemplateBox[{
      RowBox[{"2", " ", "D"}], 
      RowBox[{"3", " ", "D"}], 
@@ -1843,19 +1890,28 @@ JeSbU6D+d8Kx3qvzhv/9N6ZAWeZtFJ/NmOH/ACV6yGM=
  CellChangeTimes->{{3.5686270469174523`*^9, 3.56862706960575*^9}, 
    3.5686296346344614`*^9, 3.5687106175694203`*^9, 3.568750359260515*^9, 
    3.568750711902685*^9, 3.5687512554397736`*^9, 3.5687513994000072`*^9, 
-   3.568751589160861*^9, 3.571265942949525*^9, 3.571267496743397*^9}]
+   3.568751589160861*^9, 3.571265942949525*^9, 3.571267496743397*^9, 
+   3.5712690714864674`*^9}]
 }, Open  ]],
 
 Cell[CellGroupData[{
 
-Cell[BoxData[
+Cell[BoxData[{
  RowBox[{
-  RowBox[{"heatCapPlot", "[", 
-   RowBox[{"WL32x32", ",", "WL8x8x8", ",", "WL8x8x8x8", ",", " ", 
-    RowBox[{"2", " ", "D"}], ",", " ", 
-    RowBox[{"3", "D"}], ",", " ", 
-    RowBox[{"4", " ", "D"}]}], "]"}], " "}]], "Input",
- CellChangeTimes->{{3.568711215428616*^9, 3.5687112208369255`*^9}}],
+  RowBox[{"f6", " ", "=", " ", 
+   RowBox[{"heatCapPlot", "[", 
+    RowBox[{"WL32x32", ",", "WL8x8x8", ",", "WL8x8x8x8", ",", " ", 
+     RowBox[{"2", " ", "D"}], ",", " ", 
+     RowBox[{"3", "D"}], ",", " ", 
+     RowBox[{"4", " ", "D"}]}], "]"}]}], " "}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{"Export", "[", 
+   RowBox[{
+   "\"\<E:\\\\Physics\\\\Projects\\\\Project2013A\\\\Results\\\\Write-up\\\\\
+figures\\\\heatcapacity-wanglandau.eps\>\"", ",", " ", "f6"}], "]"}], 
+  ";"}]}], "Input",
+ CellChangeTimes->{{3.568711215428616*^9, 3.5687112208369255`*^9}, {
+  3.571269042351801*^9, 3.5712690615408983`*^9}}],
 
 Cell[BoxData[
  TemplateBox[{GraphicsBox[{{}, {{}, {}, {
@@ -2063,8 +2119,8 @@ cv9x5/IHBezi5jbsdU+C/wLR8H+a
        FormBox["\"<C>\"", TraditionalForm], None}, {
        FormBox[
        "\"\\!\\(\\*SubscriptBox[\\(k\\), \\(B\\)]\\)T / J\"", 
-        TraditionalForm], None}}, ImageSize -> Large, LabelStyle -> Medium, 
-    Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
+        TraditionalForm], None}}, ImageSize -> {600, 400}, LabelStyle -> 
+    Medium, Method -> {}, PlotRange -> {All, All}, PlotRangeClipping -> True, 
     PlotRangePadding -> {Automatic, Automatic}],TemplateBox[{
      RowBox[{"2", " ", "D"}], 
      RowBox[{"3", " ", "D"}], 
@@ -2191,11 +2247,12 @@ cv9x5/IHBezi5jbsdU+C/wLR8H+a
          RowBox[{#2, ",", "After"}], "]"}]}], "]"}]& )]], "Output",
  CellChangeTimes->{3.5687112217859793`*^9, 3.5687503593185186`*^9, 
   3.5687507119586883`*^9, 3.568751255495777*^9, 3.568751399455011*^9, 
-  3.568751589628888*^9, 3.571265945606677*^9, 3.5712674970064125`*^9}]
+  3.568751589628888*^9, 3.571265945606677*^9, 3.5712674970064125`*^9, 
+  3.571269071986496*^9}]
 }, Open  ]]
 },
-WindowSize->{837, 902},
-WindowMargins->{{Automatic, 131}, {Automatic, 2}},
+WindowSize->{837, 1042},
+WindowMargins->{{Automatic, 68}, {0, Automatic}},
 PrintingCopies->1,
 PrintingPageRange->{32000, 32000},
 PrintingOptions->{"Magnification"->1.,
